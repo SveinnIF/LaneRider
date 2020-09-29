@@ -2,13 +2,10 @@ import cv2
 import numpy as np
 import time
 import picamera
-import easygopigo3
-import easysensors
 from easygopigo3 import EasyGoPiGo3
 import matplotlib.pyplot as plt
 
-while True:
-    easygopigo3.EasyGoPiGo3.drive_cm(dist = 5.0,blocking = True)
+
 #this takes a snapshot with the camera, commented out while
 #testing
 imageHeight = 240
@@ -48,6 +45,7 @@ def display_lines(image, lines):
         for line in lines:
             x1, y1, x2, y2 = line.reshape(4)
             cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
+    print(line_image)
     return line_image
 
 def regionOfInterest(image):
