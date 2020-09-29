@@ -4,11 +4,16 @@ import time
 import picamera
 import easygopigo3
 import easysensors
+from easygopigo3 import EasyGoPiGo3
 import matplotlib.pyplot as plt
 
+gpg = EasyGoPiGo3()
+gpg.forward()
+time.sleep(1)
+gpg.stop()
 
-while True:
-    easygopigo3.EasyGoPiGo3.drive_cm(1.0,True)
+#while True:
+ #   easygopigo3.EasyGoPiGo3.drive_cm(5.0,blocking = True)
 #this takes a snapshot with the camera, commented out while
 #testing
 imageHeight = 240
