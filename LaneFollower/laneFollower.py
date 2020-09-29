@@ -6,7 +6,7 @@ import easygopigo3
 import easysensors
 import matplotlib.pyplot as plt
 
-easygopigo3.EasyGoPiGo3.set_speed(2)
+easygopigo3.EasyGoPiGo3.drive_cm(1.0,True)
 #this takes a snapshot with the camera, commented out while
 #testing
 imageHeight = 240
