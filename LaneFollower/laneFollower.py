@@ -36,13 +36,14 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-#this is just a test to see what the fuck is going on
+
 #this is an array made from the image
 #image = cv2.imread('image.jpg')
 #this is a copy of the array above
 lane_image = np.copy(image)
 
 canny = canny(lane_image)
-
-cv2.imshow("asscum",regionOfInterest(canny))
+croppedImage = regionOfInterest(canny)
+lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
+cv2.imshow("asscum",croppedImage)
 cv2.waitKey(0)
