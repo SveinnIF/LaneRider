@@ -2,8 +2,11 @@ import cv2
 import numpy as np
 import time
 import picamera
+import easygopigo3
+import easysensors
 import matplotlib.pyplot as plt
 
+easygopigo3.EasyGoPiGo3.set_speed(2)
 #this takes a snapshot with the camera, commented out while
 #testing
 imageHeight = 240
@@ -15,6 +18,18 @@ with picamera.PiCamera() as camera:
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     camera.capture(image, 'bgr')
     image = image.reshape((240,320,3))
+
+""""
+def average_slope_intercept(image, lines):
+    left_fit = []
+    right_fit = []
+    for line in lines:
+        x1, y1, x2, y2 = line.reshape(4)
+        parameters = np.polyfir((x1,x2), (y1,y2), 1)
+        slope = parameters[0]
+        intercept = parameters[1]
+"""
+
 
 def canny(image):
     #this turns the image grey
@@ -49,8 +64,8 @@ def regionOfInterest(image):
 #this is a copy of the array above
 lane_image = np.copy(image)
 
-canny = canny(lane_image)
-croppedImage = regionOfInterest(canny)
+canny_image = canny(lane_image)
+croppedImage = regionOfInterest(canny_image)
 lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
 line_image = display_lines(lane_image,lines)
 combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
