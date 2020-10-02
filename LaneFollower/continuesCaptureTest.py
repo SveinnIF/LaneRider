@@ -26,10 +26,9 @@ class ImageProcessor(threading.Thread):
                     imageHeight = 768
                     imageWidth = 1024
                     # Read the image and do some processing on it
-                    data = np.fromstring(self.stream.getvalue(), dtype=np.uint8)
+                    data = np.fromstring(self.stream, dtype=np.uint8)
                     # "Decode" the image from the array, preserving colour
-                    image = cv2.imdecode(np.frombuffer(data, dtype=np.uint8).\
-            reshape((imageHeight, imageWidth, 3))[:imageHeight, :imageWidth, :], 1)
+                    image = cv2.imdecode(
 
                     def canny(image):
                         # this turns the image grey
