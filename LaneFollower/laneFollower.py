@@ -15,8 +15,8 @@ with picamera.PiCamera() as camera:
     camera.framerate = 30
     time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    camera.capture(image, 'bgr')
-    #camera.capture_sequence(image,format = 'bgr')
+    #camera.capture(image, 'bgr')
+    camera.capture_sequence(image,format = 'bgr', use_video_port=True)
     image = image.reshape((imageHeight,imageWidth,3))
 
 
