@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 
 #this takes a snapshot with the camera, commented out while
 #testing
-imageHeight = 240
-imageWidth = 320
+imageHeight = 768
+imageWidth = 1024
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
-    camera.framerate = 24
+    camera.framerate = 30
     time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    camera.capture(image, 'bgr')
+    camera.capture_sequence(image, 'bgr')
     image = image.reshape((240,320,3))
 
 """"
