@@ -3,6 +3,7 @@ import time
 import threading
 import picamera
 import cv2
+import numpy as np
 
 class ImageProcessor(threading.Thread):
     def __init__(self, owner):
