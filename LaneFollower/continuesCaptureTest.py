@@ -21,7 +21,9 @@ class ImageProcessor(threading.Thread):
                 try:
                     self.stream.seek(0)
                     # Read the image and do some processing on it
-                    image = cv2.imread(open(self.stream))
+                    data = np.fromstring(self.stream.getvalue(), dtype=np.uint8)
+                    # "Decode" the image from the array, preserving colour
+                    image = cv2.imdecode(data, 1)
                     cv2.imshow('result', image)
 
                     #Image.open(self.stream)
