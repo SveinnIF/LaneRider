@@ -14,6 +14,8 @@ class ImageProcessor(threading.Thread):
         self.owner = owner
         self.start()
 
+
+
     def run(self):
         # This method runs in a separate thread
         while not self.terminated:
@@ -21,10 +23,13 @@ class ImageProcessor(threading.Thread):
             if self.event.wait(1):
                 try:
                     self.stream.seek(0)
+                    imageHeight = 768
+                    imageWidth = 1024
                     # Read the image and do some processing on it
                     data = np.fromstring(self.stream.getvalue(), dtype=np.uint8)
                     # "Decode" the image from the array, preserving colour
-                    image = cv2.imdecode(data, 1)
+                    image = cv2.imdecode(np.frombuffer(data, dtype=np.uint8).\
+            reshape((imageHeight, imageWidth, 3))[:imageHeight, :imageWidth, :], 1)
 
                     def canny(image):
                         # this turns the image grey
