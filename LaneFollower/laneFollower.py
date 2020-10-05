@@ -29,6 +29,7 @@ def average_slope_intercept(image, lines):
         parameters = np.polyfir((x1,x2), (y1,y2), 1)
         slope = parameters[0]
         intercept = parameters[1]
+        
 """
 
 
@@ -81,5 +82,5 @@ lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLen
 print(lines)
 line_image = display_lines(lane_image,lines)
 combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
-cv2.imshow("asscum", combo_image)
+cv2.imshow("asscum", canny_image)
 cv2.waitKey(0)
