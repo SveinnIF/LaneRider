@@ -79,3 +79,4 @@ while True:
     combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
     cv2.imshow("asscum", combo_image)
     cv2.waitKey(0)
+    time.sleep(0.1)
