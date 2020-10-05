@@ -12,10 +12,9 @@ imageHeight = 768
 imageWidth = 1024
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
-    camera.framerate = 30
+    #camera.framerate = 30
     time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    #camera.capture(image, 'bgr')
     camera.capture(image,'bgr')
     image = image.reshape((imageHeight,imageWidth,3))
 
@@ -41,7 +40,11 @@ def canny(image):
     #this derives the array and thereby detects the change in
     #intensity in nearby pixles
     canny = cv2.Canny(blur,50,150)
+
+    #if there is no track
+    #then there is no track
     return canny
+
 def display_lines(image, lines):
     line_image = np.zeros_like(image)
     if lines is not None:
@@ -67,10 +70,12 @@ def regionOfInterest(image):
 #this is a copy of the array above
 lane_image = np.copy(image)
 
-canny_image = canny(lane_image)
-croppedImage = regionOfInterest(canny_image)
-lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
-line_image = display_lines(lane_image,lines)
-combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
-cv2.imshow("asscum", combo_image)
-cv2.waitKey(0)
+while True:
+    camera.capture(image, 'bgr')
+    canny_image = canny(lane_image)
+    croppedImage = regionOfInterest(canny_image)
+    lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
+    line_image = display_lines(lane_image,lines)
+    combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
+    cv2.imshow("asscum", combo_image)
+    cv2.waitKey(0)
