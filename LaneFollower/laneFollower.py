@@ -69,10 +69,11 @@ def regionOfInterest(image):
 #this is an array made from the image
 #image = cv2.imread('image.jpg')
 #this is a copy of the array above
-lane_image = np.copy(image)
+
 
 while True:
     camera.capture(image, 'bgr')
+    lane_image = np.copy(image)
     canny_image = canny(lane_image)
     croppedImage = regionOfInterest(canny_image)
     lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
