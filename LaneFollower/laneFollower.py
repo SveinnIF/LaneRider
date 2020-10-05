@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 imageHeight = 768
 imageWidth = 1024
 with picamera.PiCamera() as camera:
-    camera = picamera.PiCamera()
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
     time.sleep(2)
