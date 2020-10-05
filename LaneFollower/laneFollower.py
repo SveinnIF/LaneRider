@@ -19,7 +19,8 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     #camera.framerate = 20
     #rawCapture = PiRGBArray(camera, size=(w, h))
-""""
+
+"""
 def average_slope_intercept(image, lines):
     left_fit = []
     right_fit = []
@@ -76,7 +77,7 @@ def regionOfInterest(image):
 lane_image = np.copy(image)
 canny_image = canny(lane_image)
 croppedImage = regionOfInterest(canny_image)
-lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
+lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=2)
 print(lines)
 line_image = display_lines(lane_image,lines)
 combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
