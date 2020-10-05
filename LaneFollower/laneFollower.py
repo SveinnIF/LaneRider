@@ -32,10 +32,6 @@ def average_slope_intercept(image, lines):
         
 """
 
-
-for
-
-
 def canny(image):
     #this turns the image grey
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
