@@ -12,7 +12,7 @@ imageHeight = 768
 imageWidth = 1024
 #with picamera.PiCamera() as camera:
 camera = picamera.PiCamera()
-#camera.resolution = (imageWidth,imageHeight)
+camera.resolution = (imageWidth,imageHeight)
 #camera.framerate = 30
 #time.sleep(2)
 image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
