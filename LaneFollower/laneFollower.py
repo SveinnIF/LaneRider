@@ -51,7 +51,7 @@ def display_lines(image, lines):
         for line in lines:
             x1, y1, x2, y2 = line.reshape(4)
             cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
-            print((x1, y1), (x2, y2))
+            #print((x1, y1), (x2, y2))
     return line_image
 
 def regionOfInterest(image):
@@ -82,4 +82,3 @@ line_image = display_lines(lane_image,lines)
 combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
 cv2.imshow("asscum", combo_image)
 cv2.waitKey(0)
-time.sleep(0.1)
