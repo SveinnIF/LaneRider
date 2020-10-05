@@ -15,11 +15,11 @@ camera = picamera.PiCamera()
 camera.resolution = (imageWidth,imageHeight)
 #camera.framerate = 30
 #time.sleep(2)
-#image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
+image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
 #camera.capture(image,'bgr')
-#image = image.reshape((imageHeight,imageWidth,3))
+image = image.reshape((imageHeight,imageWidth,3))
 camera.framerate = 20
-rawCapture = PiRGBArray(camera, size=(w, h))
+#rawCapture = PiRGBArray(camera, size=(w, h))
 """"
 def average_slope_intercept(image, lines):
     left_fit = []
@@ -71,7 +71,7 @@ def regionOfInterest(image):
 #this is a copy of the array above
 
 
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
     image = frame.array
     camera.capture(image, 'bgr')
     lane_image = np.copy(image)
