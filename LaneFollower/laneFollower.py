@@ -13,9 +13,9 @@ imageWidth = 1024
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     #camera.framerate = 30
-    time.sleep(2)
+    #time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    camera.capture(image,'bgr')
+    camera.capture_continous(image,'bgr')
     image = image.reshape((imageHeight,imageWidth,3))
 
 
@@ -71,7 +71,7 @@ def regionOfInterest(image):
 lane_image = np.copy(image)
 
 while True:
-    camera.capture(image, 'bgr')
+    camera.capture_continous(image, 'bgr')
     canny_image = canny(lane_image)
     croppedImage = regionOfInterest(canny_image)
     lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=5)
