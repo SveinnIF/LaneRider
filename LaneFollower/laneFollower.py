@@ -8,17 +8,6 @@ import matplotlib.pyplot as plt
 
 #this takes a snapshot with the camera, commented out while
 #testing
-imageHeight = 768
-imageWidth = 1024
-with picamera.PiCamera() as camera:
-    camera.resolution = (imageWidth,imageHeight)
-    camera.framerate = 30
-    time.sleep(2)
-    image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    camera.capture(image,'bgr')
-    image = image.reshape((imageHeight,imageWidth,3))
-    #camera.framerate = 20
-    #rawCapture = PiRGBArray(camera, size=(w, h))
 
 """
 def average_slope_intercept(image, lines):
@@ -69,16 +58,28 @@ def regionOfInterest(image):
 #image = cv2.imread('image.jpg')
 #this is a copy of the array above
 
+imageHeight = 768
+imageWidth = 1024
+with picamera.PiCamera() as camera:
+    camera.resolution = (imageWidth,imageHeight)
+    camera.framerate = 30
+    time.sleep(2)
+    image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
+    camera.capture(image,'bgr')
+    image = image.reshape((imageHeight,imageWidth,3))
+    #camera.framerate = 20
+    #rawCapture = PiRGBArray(camera, size=(w, h))
+    for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
+        image = frame.array
+        camera.capture(image, 'bgr')
+        lane_image = np.copy(image)
+        canny_image = canny(lane_image)
+        croppedImage = regionOfInterest(canny_image)
+        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
+        print(lines)
+        line_image = display_lines(lane_image, lines)
+        combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
+        cv2.imshow("asscum", canny_image)
 
-for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
-    image = frame.array
-    camera.capture(image, 'bgr')
-    lane_image = np.copy(image)
-    canny_image = canny(lane_image)
-    croppedImage = regionOfInterest(canny_image)
-    lines = cv2.HoughLinesP(croppedImage, 2, np.pi/180,100, np.array([]), minLineLength=40,maxLineGap=10)
-    print(lines)
-    line_image = display_lines(lane_image,lines)
-    combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1,1)
-    cv2.imshow("asscum", canny_image)
+
     #cv2.waitKey(0)
