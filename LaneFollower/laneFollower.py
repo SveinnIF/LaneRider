@@ -23,7 +23,7 @@ def average_slope_intercept(image, lines):
 
 def canny(image):
     #this turns the image grey
-    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     #this blurs the image, making edge detection more reliable
     blur = cv2.GaussianBlur(gray, (5,5),0)
     #this derives the array and thereby detects the change in
@@ -64,13 +64,13 @@ with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
     #time.sleep(2)
-    image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
+    #image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     #camera.capture(image,'bgr')
     #image = image.reshape((imageHeight,imageWidth,3))
     #camera.framerate = 20
     #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
-        #image = frame
+        image = frame.array
         camera.capture(image, 'bgr')
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
