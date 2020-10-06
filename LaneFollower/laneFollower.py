@@ -70,7 +70,7 @@ with picamera.PiCamera() as camera:
     #camera.framerate = 20
     #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
-        image = frame.array
+        image = frame
         camera.capture(image, 'bgr')
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
