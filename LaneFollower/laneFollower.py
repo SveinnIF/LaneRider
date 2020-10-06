@@ -63,10 +63,10 @@ imageWidth = 1024
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
-    time.sleep(2)
+    #time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    camera.capture(image,'bgr')
-    image = image.reshape((imageHeight,imageWidth,3))
+    #camera.capture(image,'bgr')
+    #image = image.reshape((imageHeight,imageWidth,3))
     #camera.framerate = 20
     #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
