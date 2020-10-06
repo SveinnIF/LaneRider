@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import time
 import picamera
 from easygopigo3 import EasyGoPiGo3
 import matplotlib.pyplot as plt
