@@ -71,7 +71,7 @@ with picamera.PiCamera() as camera:
     #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         #image = frame.array
-        camera.capture(image, 'bgr')
+        #camera.capture(image, 'bgr')
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
