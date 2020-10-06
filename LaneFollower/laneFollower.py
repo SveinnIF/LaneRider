@@ -64,7 +64,7 @@ with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
     #time.sleep(2)
-    #image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
+    image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     #camera.capture(image,'bgr')
     #image = image.reshape((imageHeight,imageWidth,3))
     #camera.framerate = 20
