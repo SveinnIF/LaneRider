@@ -79,6 +79,4 @@ with picamera.PiCamera() as camera:
         line_image = display_lines(lane_image, lines)
         combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
         cv2.imshow("asscum",image)
-
-
-    #cv2.waitKey(0)
+        cv2.waitKey(0)
