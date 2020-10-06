@@ -66,8 +66,7 @@ with picamera.PiCamera() as camera:
     #time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     #camera.capture(image,'bgr')
-    #image = image.reshape((imageHeight,imageWidth,3))
-    #camera.framerate = 20
+    image = image.reshape((imageHeight,imageWidth,3))
     #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         #image = frame.array
