@@ -1,25 +1,6 @@
 import cv2
 import numpy as np
-import time
 import picamera
-from easygopigo3 import EasyGoPiGo3
-import matplotlib.pyplot as plt
-
-
-#this takes a snapshot with the camera, commented out while
-#testing
-
-"""
-def average_slope_intercept(image, lines):
-    left_fit = []
-    right_fit = []
-    for line in lines:
-        x1, y1, x2, y2 = line.reshape(4)
-        parameters = np.polyfir((x1,x2), (y1,y2), 1)
-        slope = parameters[0]
-        intercept = parameters[1]
-        
-"""
 
 def canny(image):
     #this turns the image grey
@@ -29,9 +10,6 @@ def canny(image):
     #this derives the array and thereby detects the change in
     #intensity in nearby pixles
     canny = cv2.Canny(blur,50,150)
-
-    #if there is no track
-    #then there is no track
     return canny
 
 def display_lines(image, lines):
@@ -40,7 +18,6 @@ def display_lines(image, lines):
         for line in lines:
             x1, y1, x2, y2 = line.reshape(4)
             cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
-            #print((x1, y1), (x2, y2))
     return line_image
 
 def regionOfInterest(image):
@@ -53,24 +30,14 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-
-#this is an array made from the image
-#image = cv2.imread('image.jpg')
-#this is a copy of the array above
-
 imageHeight = 768
 imageWidth = 1024
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
-    #time.sleep(2)
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    #camera.capture(image,'bgr')
     image = image.reshape((imageHeight,imageWidth,3))
-    #rawCapture = PiRGBArray(camera, size=(w, h))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
-        #image = frame.array
-        #camera.capture(image, 'bgr')
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
