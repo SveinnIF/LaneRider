@@ -29,7 +29,7 @@ def waypoint_detection(image):
 
     start = NUM_IGNORED_ROWS
     step = num_relevant_rows // (NUM_WAYPOINTS + 1)
-
+    waypoints = []
     for i in range(start, num_rows, step):
         for j in range(len(image[i]),0):
             if image[i][j] is 255:
