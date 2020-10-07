@@ -49,7 +49,7 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
-        print(croppedImage)
+        print(lane_image)
         #waypoints = waypoint_detection(croppedImage)
         #lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
         #print(lines)
