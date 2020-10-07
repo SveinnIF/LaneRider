@@ -31,7 +31,7 @@ def waypoint_detection(image):
     step = num_relevant_rows // (NUM_WAYPOINTS + 1)
     waypoints = []
     for i in range(start, num_rows, step):
-        for j in range(len(image[i]),0, -1):
+        for j in range(len(image[i]) - 1, -1, -1)
             if image[i][j] == 255:
                 waypoints.append((i,j))
                 break
