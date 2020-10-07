@@ -27,8 +27,9 @@ def waypoint_detection(image):
     num_rows = len(image)
     num_relevant_rows = (num_rows - NUM_IGNORED_ROWS)
 
-    start = NUM_IGNORED_ROWS
+
     step = num_relevant_rows // (NUM_WAYPOINTS + 1)
+    start = NUM_IGNORED_ROWS + step
     waypoints = []
     for i in range(start, num_rows, step):
         print(i)
