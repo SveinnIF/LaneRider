@@ -32,7 +32,7 @@ def waypoint_detection(image):
 
     for i in range(start, num_rows, step):
         for j in range(len(image.array[i]),0):
-            if image.array[i][j] is not None:
+            if image.array[i][j] is 255:
                 waypoints.append([i][j])
                 break
 
