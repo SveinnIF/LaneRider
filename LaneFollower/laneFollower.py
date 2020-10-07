@@ -19,14 +19,23 @@ def display_lines(image, lines):
             x1, y1, x2, y2 = line.reshape(4)
             cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
     return line_image
-"""
+
 def waypoint_detection(image):
-    num_waypoints = 3
-    for i in num_waypoints:
-        for j in len(image.array):
+    NUM_IGNORED_ROWS = 60
+    NUM_WAYPOINTS = 3
+
+    num_rows = len(image.array)
+    num_relevant_rows = (num_rows - NUM_IGNORED_ROWS)
+
+    start = NUM_IGNORED_ROWS
+    step = num_relevant_rows // (NUM_WAYPOINTS + 1)
+
+    for i in range(start, num_rows, step):
+        for j in range(len(image.array[i]),0):
             if image.array[i][j] is not None:
-                
-"""
+                waypoints.append([i][j])
+                break
+
 
 def regionOfInterest(image):
     amountTaken = 60
@@ -49,8 +58,7 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
-        print(lane_image)
-        #waypoints = waypoint_detection(croppedImage)
+        waypoints = waypoint_detection(croppedImage)
         #lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
         #print(lines)
         #line_image = display_lines(lane_image, lines)
