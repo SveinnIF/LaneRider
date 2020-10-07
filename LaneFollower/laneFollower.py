@@ -35,6 +35,7 @@ def waypoint_detection(image):
             if image[i][j] is 255:
                 waypoints.append((i,j))
                 break
+    return waypoints
 
 
 def regionOfInterest(image):
