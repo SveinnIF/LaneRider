@@ -24,16 +24,16 @@ def waypoint_detection(image):
     NUM_IGNORED_ROWS = 60
     NUM_WAYPOINTS = 3
 
-    num_rows = len(image.array)
+    num_rows = len(image)
     num_relevant_rows = (num_rows - NUM_IGNORED_ROWS)
 
     start = NUM_IGNORED_ROWS
     step = num_relevant_rows // (NUM_WAYPOINTS + 1)
 
     for i in range(start, num_rows, step):
-        for j in range(len(image.array[i]),0):
-            if image.array[i][j] is 255:
-                waypoints.append([i][j])
+        for j in range(len(image[i]),0):
+            if image[i][j] is 255:
+                waypoints.append((i,j))
                 break
 
 
