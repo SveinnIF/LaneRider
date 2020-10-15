@@ -25,6 +25,7 @@ def find_usable_line(lines):
     previous_point = []
     lowest_value = []
     if lines is None:
+        print('piss')
         return 90 # Change at a later time
     for line in lines:
         if lines is None:
@@ -33,17 +34,23 @@ def find_usable_line(lines):
         if previous_point != []:
             if previous_point[0] > x1 and previous_point[1] > y1:
                 lowest_value = [x1, y1, x2, y2]
+                print('lowest value in if ')
+                print(lowest_value)
         previous_point = [x1, y1]
+    print('lowest value final ')
     print(lowest_value)
+    if lowest_value == []:
+        return 90
     katet = lowest_value[2] - lowest_value[0]
-    print(katet)
+
     motKat = lowest_value[3] - lowest_value[1]
     hypotenus = math.sqrt(math.pow(math.fabs(katet),2) + math.pow(math.fabs(motKat),2))
-    angle = math.acos(katet/hypotenus)
+    angleRad = math.acos(katet/hypotenus)
+    angle = angleRad * 180 / math.pi
     return angle
 
 def waypoint_detection(image):
-    NUM_IGNORED_ROWS = 60
+    NUM_IGNORED_ROWS = 120
     NUM_WAYPOINTS = 3
 
     num_rows = len(image)
@@ -85,7 +92,7 @@ with picamera.PiCamera() as camera:
         croppedImage = regionOfInterest(canny_image)
         #waypoints = waypoint_detection(croppedImage)
         #print(waypoints)
-        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
+        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=20, maxLineGap=15)
         #print(lines)
         line_image = display_lines(lane_image, lines)
         combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
