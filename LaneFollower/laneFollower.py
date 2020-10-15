@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import picamera
 import math
+from easygopigo3 import EasyGoPiGo3
+GPG = EasyGoPiGo3()
 
 def canny(image):
     #this turns the image grey
@@ -48,6 +50,18 @@ def find_usable_line(lines):
     angleRad = math.acos(katet/hypotenus)
     angle = angleRad * 180 / math.pi
     return angle
+
+
+def wheel_control(turn_rate):
+    speed_percentage = 25
+    FORWARD_POWER = 50
+
+    left_power = FORWARD_POWER + turn_rate * speed_percentage
+    right_power = FORWARD_POWER - turn_rate * speed_percentage
+    # print("Left Power: {}, Right Power: {}".format(left_power,right_power))
+
+    GPG.set_motor_power(GPG.MOTOR_LEFT, left_power)
+    GPG.set_motor_power(GPG.MOTOR_RIGHT, right_power)
 
 def waypoint_detection(image):
     NUM_IGNORED_ROWS = 120
