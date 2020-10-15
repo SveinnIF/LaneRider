@@ -26,12 +26,11 @@ def find_usable_line(lines):
     lowest_value = []
     for line in lines:
         x1, y1, x2, y2 = line.reshape(4)
-        if previous_point != []:
+        if previous_point:
             if previous_point[1] > x1 and previous_point[2] > y1:
-                lowest_value = [x1,y1,x2,y2]
-        previous_point = [x1,y1]
+                lowest_value = [x1, y1, x2, y2]
+        previous_point = [x1, y1]
 
-    third_point =
     katet = lowest_value[2] - lowest_value[0]
     print(katet)
     motKat = lowest_value[3] - lowest_value[1]
@@ -80,11 +79,12 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
-        waypoints = waypoint_detection(croppedImage)
-        print(waypoints)
-        #lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
+        #waypoints = waypoint_detection(croppedImage)
+        #print(waypoints)
+        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
         #print(lines)
-        #line_image = display_lines(lane_image, lines)
-        #combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
-        cv2.imshow("asscum",croppedImage)
+        line_image = display_lines(lane_image, lines)
+        combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
+        find_usable_line(lines)
+        cv2.imshow("asscum",combo_image)
         cv2.waitKey(1)
