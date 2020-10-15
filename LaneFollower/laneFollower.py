@@ -24,13 +24,17 @@ def display_lines(image, lines):
 def find_usable_line(lines):
     previous_point = []
     lowest_value = []
+    if lines is None:
+        return 90 # Change at a later time
     for line in lines:
+        if lines is None:
+            return 90
         x1, y1, x2, y2 = line.reshape(4)
-        if previous_point:
-            if previous_point[1] > x1 and previous_point[2] > y1:
+        if previous_point != []:
+            if previous_point[0] > x1 and previous_point[1] > y1:
                 lowest_value = [x1, y1, x2, y2]
         previous_point = [x1, y1]
-
+    print(lowest_value)
     katet = lowest_value[2] - lowest_value[0]
     print(katet)
     motKat = lowest_value[3] - lowest_value[1]
@@ -85,6 +89,6 @@ with picamera.PiCamera() as camera:
         #print(lines)
         line_image = display_lines(lane_image, lines)
         combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
-        find_usable_line(lines)
-        cv2.imshow("asscum",combo_image)
+        print(find_usable_line(lines))
+        cv2.imshow("lineVision",combo_image)
         cv2.waitKey(1)
