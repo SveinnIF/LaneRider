@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import picamera
+import math
 
 def canny(image):
     #this turns the image grey
@@ -19,6 +20,24 @@ def display_lines(image, lines):
             x1, y1, x2, y2 = line.reshape(4)
             cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
     return line_image
+
+def find_usable_line(lines):
+    previous_point = []
+    lowest_value = []
+    for line in lines:
+        x1, y1, x2, y2 = line.reshape(4)
+        if previous_point != []:
+            if previous_point[1] > x1 and previous_point[2] > y1:
+                lowest_value = [x1,y1,x2,y2]
+        previous_point = [x1,y1]
+
+    third_point =
+    katet = lowest_value[2] - lowest_value[0]
+    print(katet)
+    motKat = lowest_value[3] - lowest_value[1]
+    hypotenus = math.sqrt(math.pow(math.fabs(katet),2) + math.pow(math.fabs(motKat),2))
+    angle = math.acos(katet/hypotenus)
+    return angle
 
 def waypoint_detection(image):
     NUM_IGNORED_ROWS = 60
