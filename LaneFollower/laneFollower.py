@@ -27,7 +27,7 @@ def regionOfInterest(image):
 
 #def CropImageFromTop(image, amount_px):
 #    image.
- #   return
+#    return
 
 
 #Camera values
@@ -43,7 +43,7 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        
+        print(lane_image.shape)
         croppedImage = regionOfInterest(lane_image)
         canny_image = canny(lane_image)
         #print(waypoints)
