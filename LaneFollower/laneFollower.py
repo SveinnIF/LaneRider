@@ -25,7 +25,10 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-#def CropImageFromTop(image, amount):
+def CropImageFromTop(image, amount_px):
+    image.
+    return
+
 
 #Camera values
 imageHeight = 480
@@ -45,7 +48,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(croppedImage)
         #print(waypoints)
         #print(lines)
-        cv2.imshow("lineVision",croppedImage)
+        cv2.imshow("lineVision",lane_image)
         cv2.waitKey(1)
 
 
