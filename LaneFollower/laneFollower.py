@@ -25,10 +25,11 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
+#def CropImageFromTop(image, amount):
 
 #Camera values
-imageHeight = 768
-imageWidth = 1024
+imageHeight = 480
+imageWidth = 640
 
 
 
@@ -46,3 +47,29 @@ with picamera.PiCamera() as camera:
         #print(lines)
         cv2.imshow("lineVision",croppedImage)
         cv2.waitKey(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
