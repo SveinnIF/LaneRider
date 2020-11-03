@@ -15,72 +15,6 @@ def canny(image):
     canny = cv2.Canny(blur,50,150)
     return canny
 
-def display_lines(image, lines):
-    line_image = np.zeros_like(image)
-    if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line.reshape(4)
-            cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
-    return line_image
-
-def find_usable_line(lines):
-    previous_point = []
-    lowest_point = []
-    if lines is None:
-        return 90 # Change at a later time
-    for line in lines:
-        if lines is None:
-            return 90
-        x1, y1, x2, y2 = line.reshape(4)
-        if previous_point != []:
-            if previous_point[0] > x1 and previous_point[1] > y1:
-                lowest_point = [x1, y1, x2, y2]
-                print('lowest value in if ')
-                print(lowest_point)
-        previous_point = [x1, y1]
-    print('lowest value final ')
-    print(lowest_point)
-    if lowest_point == []:
-        return 90
-    katet = lowest_point[2] - lowest_point[0]
-    motKat = lowest_point[3] - lowest_point[1]
-    hypotenus = math.sqrt(math.pow(math.fabs(katet),2) + math.pow(math.fabs(motKat),2))
-    angleRad = math.acos(katet/hypotenus)
-    angleDeg = angleRad * 180 / math.pi
-    return angleDeg
-
-
-def wheel_control(turn_rate):
-    speed_percentage = 25
-    FORWARD_POWER = 50
-
-    left_power = FORWARD_POWER + turn_rate * speed_percentage
-    right_power = FORWARD_POWER - turn_rate * speed_percentage
-    # print("Left Power: {}, Right Power: {}".format(left_power,right_power))
-
-    GPG.set_motor_power(GPG.MOTOR_LEFT, left_power)
-    GPG.set_motor_power(GPG.MOTOR_RIGHT, right_power)
-
-def waypoint_detection(image):
-    NUM_IGNORED_ROWS = 120
-    NUM_WAYPOINTS = 3
-
-    num_rows = len(image)
-    num_relevant_rows = (num_rows - NUM_IGNORED_ROWS)
-
-
-    step = num_relevant_rows // (NUM_WAYPOINTS + 1)
-    start = NUM_IGNORED_ROWS + step
-    waypoints = []
-    for i in range(start, num_rows, step):
-        print(i)
-        for j in range(len(image[i]) - 1, -1, -1):
-            if image[i][j] == 255:
-                waypoints.append((i, j))
-                break
-    return waypoints
-
-
 def regionOfInterest(image):
     amountTaken = 60
     rectangle = np.array([
@@ -91,8 +25,13 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
+
+#Camera values
 imageHeight = 768
 imageWidth = 1024
+
+
+
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
@@ -102,12 +41,8 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         croppedImage = regionOfInterest(canny_image)
-        #waypoints = waypoint_detection(croppedImage)
         #print(waypoints)
         lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=20, maxLineGap=15)
         #print(lines)
-        line_image = display_lines(lane_image, lines)
-        combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
-        wheel_control(find_usable_line(lines))
-        cv2.imshow("lineVision",combo_image)
+        cv2.imshow("lineVision",croppedImage)
         cv2.waitKey(1)
