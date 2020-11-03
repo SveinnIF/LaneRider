@@ -45,10 +45,10 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         
         croppedImage = regionOfInterest(lane_image)
-        #canny_image = canny(croppedImage)
+        canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-        cv2.imshow("lineVision",lane_image)
+        cv2.imshow("lineVision",canny_image)
         cv2.waitKey(1)
 
 
