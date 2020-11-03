@@ -25,9 +25,9 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-#def CropImageFromTop(image, amount_px):
-#    image.
-#    return
+def CropImageFromTop(image, amount_px):
+    cropped_image = image[amount_px:imageHeight, 0:imageWidth]
+    return cropped_image
 
 
 #Camera values
@@ -44,11 +44,11 @@ with picamera.PiCamera() as camera:
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
         print(lane_image.shape)
-        croppedImage = regionOfInterest(lane_image)
-        canny_image = canny(lane_image)
+        cropped_image = CropImageFromTop(lane_image, 60)
+        #canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-        cv2.imshow("lineVision",canny_image)
+        cv2.imshow("lineVision",cropped_image)
         cv2.waitKey(1)
 
 
