@@ -40,10 +40,10 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        canny_image = canny(lane_image)
-        croppedImage = regionOfInterest(canny_image)
+        
+        croppedImage = regionOfInterest(lane_image)
+        #canny_image = canny(croppedImage)
         #print(waypoints)
-        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=20, maxLineGap=15)
         #print(lines)
         cv2.imshow("lineVision",croppedImage)
         cv2.waitKey(1)
