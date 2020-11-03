@@ -26,7 +26,8 @@ def regionOfInterest(image):
     return masked_image
 
 def CropImageFromTop(image, amount_px):
-    cropped_image = image[amount_px:imageHeight, 0:imageWidth]
+    cropped_image = np.empty((imageHeight-amount_px)*imageWidth*3)
+    cropped_image = cropped_image.reshape(imageHeight-amount_px,imageWidth,3)
     return cropped_image
 
 
@@ -49,7 +50,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-        
+
         cv2.imshow("lineVision",cropped_image)
         cv2.waitKey(1)
 
