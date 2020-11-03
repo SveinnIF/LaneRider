@@ -25,9 +25,8 @@ def display_lines(image, lines):
 
 def find_usable_line(lines):
     previous_point = []
-    lowest_value = []
+    lowest_point = []
     if lines is None:
-        print('piss')
         return 90 # Change at a later time
     for line in lines:
         if lines is None:
@@ -35,21 +34,20 @@ def find_usable_line(lines):
         x1, y1, x2, y2 = line.reshape(4)
         if previous_point != []:
             if previous_point[0] > x1 and previous_point[1] > y1:
-                lowest_value = [x1, y1, x2, y2]
+                lowest_point = [x1, y1, x2, y2]
                 print('lowest value in if ')
-                print(lowest_value)
+                print(lowest_point)
         previous_point = [x1, y1]
     print('lowest value final ')
-    print(lowest_value)
-    if lowest_value == []:
+    print(lowest_point)
+    if lowest_point == []:
         return 90
-    katet = lowest_value[2] - lowest_value[0]
-
-    motKat = lowest_value[3] - lowest_value[1]
+    katet = lowest_point[2] - lowest_point[0]
+    motKat = lowest_point[3] - lowest_point[1]
     hypotenus = math.sqrt(math.pow(math.fabs(katet),2) + math.pow(math.fabs(motKat),2))
     angleRad = math.acos(katet/hypotenus)
-    angle = angleRad * 180 / math.pi
-    return angle
+    angleDeg = angleRad * 180 / math.pi
+    return angleDeg
 
 
 def wheel_control(turn_rate):
@@ -110,6 +108,6 @@ with picamera.PiCamera() as camera:
         #print(lines)
         line_image = display_lines(lane_image, lines)
         combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
-        print(find_usable_line(lines))
+        wheel_control(find_usable_line(lines))
         cv2.imshow("lineVision",combo_image)
         cv2.waitKey(1)
