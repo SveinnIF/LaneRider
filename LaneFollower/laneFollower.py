@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import picamera
-import math
+import matplotlib.pyplot as plt
 from easygopigo3 import EasyGoPiGo3
 GPG = EasyGoPiGo3()
 
@@ -15,21 +15,21 @@ def canny(image):
     canny = cv2.Canny(blur,50,150)
     return canny
 
-def regionOfInterest(image):
-    amountTaken = 60
-    rectangle = np.array([
-        [(0,imageHeight), (0, amountTaken), (imageWidth,amountTaken), (imageWidth, imageHeight)]
-        ])
-    mask = np.zeros_like(image)
-    cv2.fillPoly(mask, rectangle, 255)
-    masked_image = cv2.bitwise_and(image, mask)
-    return masked_image
+# code for image transform taken from: (And reconfigured)
+# https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html
 
-#def CropImageFromTop(image, amount_px):
+def birdsEyeTransform(image):
 
+    src = np.float32([[0, imageHeight], [1207, imageHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[0, imageHeight], [711, imageHeight], [0, 0], [imageWidth, 0]])
+    M = cv2.getPerspectiveTransform(src, dst)
+    Minv = cv2.getPerspectiveTransform(dst, src)
 
+    img = image[40: 40 + imageHeight, 0:imageWidth]
+    warped_img = cv2.warpPerspective(cv2.warpPerspective(img, M, (imageWidth, imageHeight)))
+    return warped_img
 
-#Camera values
+#Camera Values
 imageHeight = 480
 imageWidth = 640
 
@@ -43,13 +43,13 @@ with picamera.PiCamera() as camera:
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
         print(lane_image.shape)
-        cropped_image = CropImageFromTop(lane_image, 60)
-        print(cropped_image.shape)
+        #cropped_image = CropImageFromTop(lane_image, 60)
+        #print(cropped_image.shape)
         #canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-
-        cv2.imshow("lineVision",cropped_image)
+        img_birdseye = birdsEyeTransform(lane_image)
+        cv2.imshow("lineVision", img_birdseye)
         cv2.waitKey(1)
 
 
