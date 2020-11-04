@@ -20,8 +20,8 @@ def canny(image):
 
 def birdsEyeTransform(image):
 
-    src = np.float32([[0, imageHeight], [1207, imageHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[0, imageHeight], [711, imageHeight], [0, 0], [imageWidth, 0]])
+    src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[220, imageHeight], [260, imageHeight], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
     Minv = cv2.getPerspectiveTransform(dst, src)
 
