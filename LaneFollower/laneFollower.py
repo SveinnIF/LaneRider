@@ -20,11 +20,11 @@ def canny(image):
 
 def birdsEyeTransform(image, cropTop, cropBottom):
 
-    src = np.float32([[0, imageHeight], [480, imageHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[200, imageHeight], [280, imageHeight], [0, 0], [imageWidth, 0]])
+    src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[300, imageHeight], [340, imageHeight], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
 
-    img = image[cropBottom:imageHeight-cropTop, 0:imageWidth]
+    img = image[cropTop:imageHeight-cropBottom, 0:imageWidth]
     warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
     return warped_img
 
