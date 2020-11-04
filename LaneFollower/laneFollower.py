@@ -21,7 +21,7 @@ def canny(image):
 def birdsEyeTransform(image, cropTop, cropBottom):
 
     src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[300, imageHeight], [340, imageHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[imageWidth/2-30, imageHeight], [imageWidth/2+30, imageHeight], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
 
     img = image[cropTop:imageHeight-cropBottom, 0:imageWidth]
