@@ -48,7 +48,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-        img_birdseye = birdsEyeTransform(lane_image, 0, 320)
+        img_birdseye = birdsEyeTransform(lane_image, 320, 0)
         cv2.imshow("lineVision", img_birdseye)
         cv2.waitKey(1)
 
