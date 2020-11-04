@@ -25,10 +25,8 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-def CropImageFromTop(image, amount_px):
-    cropped_image = np.empty((imageHeight-amount_px)*imageWidth*3)
-    cropped_image = cropped_image.reshape(imageHeight-amount_px,imageWidth,3)
-    return cropped_image
+#def CropImageFromTop(image, amount_px):
+
 
 
 #Camera values
