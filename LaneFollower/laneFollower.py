@@ -18,14 +18,14 @@ def canny(image):
 # code for image transform taken from: (And reconfigured)
 # https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html
 
-def birdsEyeTransform(image, CropBottom,  CropTop):
+def birdsEyeTransform(image, cropBottom,  cropTop):
 
     src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
     dst = np.float32([[200, imageHeight], [280, imageHeight], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
     Minv = cv2.getPerspectiveTransform(dst, src)
 
-    img = image[0:imageHeight-320, 0:imageWidth]
+    img = image[cropBottom:imageHeight - cropTop, 0:imageWidth]
     warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
     return warped_img
 
@@ -48,7 +48,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
         #print(waypoints)
         #print(lines)
-        img_birdseye = birdsEyeTransform(lane_image)
+        img_birdseye = birdsEyeTransform(lane_image, 0, 320)
         cv2.imshow("lineVision", img_birdseye)
         cv2.waitKey(1)
 
