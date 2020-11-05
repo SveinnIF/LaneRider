@@ -28,6 +28,11 @@ def birdsEyeTransform(image, cropTop, cropBottom):
     warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
     return warped_img
 
+def filterBlackWhite(image, ):
+    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY0)
+    return image_black_white
+
 #Camera Values
 imageHeight = 480
 imageWidth = 640
@@ -48,7 +53,8 @@ with picamera.PiCamera() as camera:
         #print(waypoints)
         #print(lines)
         img_birdseye = birdsEyeTransform(lane_image, 320, 0)
-        cv2.imshow("lineVision", img_birdseye)
+        img_blackwhite = filterBlackWhite(img_birdseye)
+        cv2.imshow("lineVision", img_blackwhite)
         cv2.waitKey(1)
 
 
