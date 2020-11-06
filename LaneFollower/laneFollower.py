@@ -56,13 +56,14 @@ def findPts(image):
     print(len(image))
     print(image.ndim)
 
-    for y in range(len(image)-1, 0, step):
+    for y in range(len(image)-1, 0, -10):
         prev = 0
         for x in range(len(image[y])-1, 0, step):
             if prev < image[y][x]:
                 prev = image[y][x]
                 pts.append((y, x))
                 cv2.rectangle(image, (y, x), (y+1, x+1), 1)
+                break
 
 
 with picamera.PiCamera() as camera:
@@ -81,7 +82,7 @@ with picamera.PiCamera() as camera:
         img_birdseye = birdsEyeTransform(lane_image)
         img_blackwhite = filterBlackWhite(img_birdseye)
         findPts(img_blackwhite)
-        print(img_birdseye.shape)
+        #print(img_birdseye.shape)
         cv2.imshow("lineVision", img_blackwhite)
         cv2.waitKey(1)
 
