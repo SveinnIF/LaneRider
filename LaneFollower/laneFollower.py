@@ -56,8 +56,8 @@ def findPts(image):
     print(len(image))
     print(len(image[0]))
 
-    for y in range(len(image), 0, step):
-        for x in range(len(image[y-1])-1, 0, step):
+    for y in range(len(image)-1, 0, step):
+        for x in range(len(image[y])-1, 0, step):
             if image[y][x+1][0] > image[y][x][0]:
                 pts.append((y, x))
                 cv2.rectangle(image, (y, x), (y+1, x+1), 1)
