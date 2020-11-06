@@ -18,17 +18,12 @@ def canny(image):
 # code for image transform taken from: (And reconfigured)
 # https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html
 
-def birdsEyeTransform(image, cropTop, cropBottom):
+def birdsEyeTransform(image):
     #Crop image
 
-    finalHeight = imageHeight-cropBottom
-    img = image[cropTop:finalHeight, 0:imageWidth]
+    img = image[cropTop:croppedHeight, 0:imageWidth]
+    warped_img = cv2.warpPerspective(img, M, (imageWidth, croppedHeight))
 
-    src = np.float32([[cropTop, finalHeight], [640, finalHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[imageWidth/2-35, finalHeight], [imageWidth/2+35, finalHeight], [0, 0], [imageWidth, 0]])
-    M = cv2.getPerspectiveTransform(src, dst)
-
-    warped_img = cv2.warpPerspective(img, M, (imageWidth, finalHeight))
     return warped_img
 
 def filterBlackWhite(image):
@@ -36,14 +31,23 @@ def filterBlackWhite(image):
     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
     return image_black_white
 
-#def findPts(image):
+# def findPts(image):
 
 
-#Camera Values
+# Camera Values
 imageHeight = 480
 imageWidth = 640
+# image cropping values
+cropTop = 320
+cropBottom = imageHeight - 0
+croppedHeight = cropBottom - cropTop
 
 
+
+# Birdseye transform lookup table
+src = np.float32([[0, croppedHeight], [640, croppedHeight], [0, 0], [imageWidth, 0]])
+dst = np.float32([[imageWidth / 2 - 35, croppedHeight], [imageWidth / 2 + 35, croppedHeight], [0, 0], [imageWidth, 0]])
+M = cv2.getPerspectiveTransform(src, dst)
 
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
