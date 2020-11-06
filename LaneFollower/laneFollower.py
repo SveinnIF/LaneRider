@@ -23,7 +23,7 @@ def canny(image):
 def filterBlackWhite(image):
     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
-    return image_black_white
+    return image_grey_scale
 
 
 
@@ -37,7 +37,7 @@ cropBottom = imageHeight - 0
 croppedHeight = cropBottom - cropTop
 
 # Birdseye transform lookup table
-src = np.float32([[0, croppedHeight], [640, croppedHeight], [0, 0], [imageWidth, 0]])
+src = np.float32([[, croppedHeight], [640, croppedHeight], [0, 0], [imageWidth, 0]])
 dst = np.float32([[imageWidth / 2 - 35, croppedHeight], [imageWidth / 2 + 35, croppedHeight], [0, 0], [imageWidth, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
