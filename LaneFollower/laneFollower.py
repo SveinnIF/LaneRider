@@ -23,7 +23,6 @@ def birdsEyeTransform(image, cropTop, cropBottom):
 
     finalHeight = imageHeight-cropBottom
     img = image[cropTop:finalHeight, 0:imageWidth]
-    print(img.shape)
 
     src = np.float32([[cropTop, finalHeight], [640, finalHeight], [0, 0], [imageWidth, 0]])
     dst = np.float32([[imageWidth/2-35, finalHeight], [imageWidth/2+35, finalHeight], [0, 0], [imageWidth, 0]])
@@ -61,7 +60,8 @@ with picamera.PiCamera() as camera:
         #print(lines)
         img_birdseye = birdsEyeTransform(lane_image, 320, 0)
         img_blackwhite = filterBlackWhite(img_birdseye)
-        cv2.imshow("lineVision", img_blackwhite)
+        print(img_birdseye.shape)
+        cv2.imshow("lineVision", img_birdseye)
         cv2.waitKey(1)
 
 
