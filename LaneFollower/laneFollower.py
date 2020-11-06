@@ -19,19 +19,23 @@ def canny(image):
 # https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html
 
 def birdsEyeTransform(image, cropTop, cropBottom):
-
+    #Crop image
+    img = image[cropTop:imageHeight-cropBottom, 0:imageWidth]
+    print(img.shape)
     src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[imageWidth/2-30, imageHeight], [imageWidth/2+30, imageHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[imageWidth/2-35, imageHeight-cropBottom], [imageWidth/2+35, imageHeight-cropBottom], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
 
-    img = image[cropTop:imageHeight-cropBottom, 0:imageWidth]
     warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
     return warped_img
 
-def filterBlackWhite(image, ):
+def filterBlackWhite(image):
     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY0)
+    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
     return image_black_white
+
+def findPts(image):
+
 
 #Camera Values
 imageHeight = 480
@@ -46,7 +50,7 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        print(lane_image.shape)
+        #print(lane_image.shape)
         #cropped_image = CropImageFromTop(lane_image, 60)
         #print(cropped_image.shape)
         #canny_image = canny(lane_image)
