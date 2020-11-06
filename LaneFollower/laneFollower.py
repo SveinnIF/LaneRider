@@ -20,13 +20,16 @@ def canny(image):
 
 def birdsEyeTransform(image, cropTop, cropBottom):
     #Crop image
-    img = image[cropTop:imageHeight-cropBottom, 0:imageWidth]
+
+    finalHeight = imageHeight-cropBottom
+    img = image[cropTop:finalHeight, 0:imageWidth]
     print(img.shape)
-    src = np.float32([[0, imageHeight], [640, imageHeight], [0, 0], [imageWidth, 0]])
-    dst = np.float32([[imageWidth/2-35, imageHeight-cropBottom], [imageWidth/2+35, imageHeight-cropBottom], [0, 0], [imageWidth, 0]])
+
+    src = np.float32([[cropTop, finalHeight], [640, finalHeight], [0, 0], [imageWidth, 0]])
+    dst = np.float32([[imageWidth/2-35, finalHeight], [imageWidth/2+35, finalHeight], [0, 0], [imageWidth, 0]])
     M = cv2.getPerspectiveTransform(src, dst)
 
-    warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
+    warped_img = cv2.warpPerspective(img, M, (imageWidth, finalHeight))
     return warped_img
 
 def filterBlackWhite(image):
@@ -34,7 +37,7 @@ def filterBlackWhite(image):
     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
     return image_black_white
 
-def findPts(image):
+#def findPts(image):
 
 
 #Camera Values
