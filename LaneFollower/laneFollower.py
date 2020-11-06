@@ -53,6 +53,8 @@ def filterBlackWhite(image):
 def findPts(image):
     pts = []
     step = -1
+    print(len(image))
+    print(len(image[0]))
     for y in range(len(image), 0, step):
         for x in range(len(image[y])-1, 0, step):
             if image[y][x][0] > image[y][x-1][0]:
