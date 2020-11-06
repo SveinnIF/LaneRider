@@ -20,10 +20,6 @@ def canny(image):
 
 
 
-def filterBlackWhite(image):
-    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
-    return image_grey_scale
 
 
 
@@ -49,7 +45,19 @@ def birdsEyeTransform(image):
 
     return warped_img
 
-# def findPts(image):
+def filterBlackWhite(image):
+    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
+    return image_black_white
+
+def findPts(image):
+    pts = []
+    step = -1
+    for y in range(len(image), 0, step):
+        for x in range(len(image[y]), 0, step):
+            if image[y][x][0] > image[y][x-1][0]:
+                pts.append((y, x))
+                cv2.rectangle(image, (y, x), (y+1, x+1), 1)
 
 
 with picamera.PiCamera() as camera:
@@ -67,8 +75,9 @@ with picamera.PiCamera() as camera:
         #print(lines)
         img_birdseye = birdsEyeTransform(lane_image)
         img_blackwhite = filterBlackWhite(img_birdseye)
+        findPts(img_blackwhite)
         print(img_birdseye.shape)
-        cv2.imshow("lineVision", img_birdseye)
+        cv2.imshow("lineVision", img_blackwhite)
         cv2.waitKey(1)
 
 
