@@ -54,7 +54,7 @@ def findPts(image):
     pts = []
     step = -1
     print(len(image))
-    print(len(image[0]))
+    print(image.ndim)
 
     for y in range(len(image)-1, 0, step):
         prev = 0
