@@ -52,13 +52,12 @@ def filterBlackWhite(image):
 
 def findPts(image):
     pts = []
-    step = -1
     print(len(image))
     print(image.ndim)
 
-    for y in range(len(image)-1, 0, -10):
+    for y in range(len(image)-1, 0, -20):
         prev = 0
-        for x in range(len(image[y])-1, 0, step):
+        for x in range(len(image[y])-1, 0, -1):
             if prev < image[y][x]:
                 prev = image[y][x]
                 pts.append((x, y))
@@ -80,10 +79,11 @@ with picamera.PiCamera() as camera:
         #print(waypoints)
         #print(lines)
         img_birdseye = birdsEyeTransform(lane_image)
-        img_blackwhite = filterBlackWhite(img_birdseye)
-        findPts(img_blackwhite)
+        #img_blackwhite = filterBlackWhite(img_birdseye)
+        img_canny = canny(img_birdseye)
+        findPts(img_canny)
         #print(img_birdseye.shape)
-        cv2.imshow("lineVision", img_blackwhite)
+        cv2.imshow("lineVision", img_canny)
         cv2.waitKey(1)
 
 
