@@ -62,7 +62,7 @@ def findPts(image):
             if prev < image[y][x]:
                 prev = image[y][x]
                 pts.append((y, x))
-                cv2.rectangle(image, (y, x), (y+1, x+1), 1)
+                cv2.rectangle(image, (y, x), (y+1, x+1), (255,255,255),10)
                 break
 
 
