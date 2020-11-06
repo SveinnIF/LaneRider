@@ -37,7 +37,7 @@ cropBottom = imageHeight - 0
 croppedHeight = cropBottom - cropTop
 
 # Birdseye transform lookup table
-src = np.float32([[, croppedHeight], [640, croppedHeight], [0, 0], [imageWidth, 0]])
+src = np.float32([[0, croppedHeight], [640, croppedHeight], [0, 0], [imageWidth, 0]])
 dst = np.float32([[imageWidth / 2 - 35, croppedHeight], [imageWidth / 2 + 35, croppedHeight], [0, 0], [imageWidth, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
