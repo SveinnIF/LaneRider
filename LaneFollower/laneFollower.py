@@ -33,27 +33,26 @@ def birdsEyeTransform(image):
     return warped_img
 
 
-def filterBlackWhite(image):
+# def filterBlackWhite(image):
+#
+#     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
+#     return image_black_white
 
-    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
-    return image_black_white
+# def getCountorPts(image):
+#     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#     ret, thresh = cv2.threshold(image_grey_scale, 127, 255, 0)
+#     im, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+#     print(contours)
+#     cnt = contours[0].reshape(-1, 2)
+#
+#
+#     mask = np.zeros(image.shape, np.uint8)
+#     cv2.drawContours(mask, [cnt], 0, 255, -1)
+#     #pixelpoints = np.transpose(np.nonzero(mask))
+#     #pixelpoints = cv2.findNonZero(mask)
 
-
-
-def getCountorPts(image):
-    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(image_grey_scale, 127, 255, 0)
-    im, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    print(contours)
-    cnt = contours[0].reshape(-1, 2)
-
-
-
-    mask = np.zeros(image.shape, np.uint8)
-    cv2.drawContours(mask, [cnt], 0, 255, -1)
-    #pixelpoints = np.transpose(np.nonzero(mask))
-    #pixelpoints = cv2.findNonZero(mask)
+def
 
 
 def canny(image):
@@ -76,7 +75,6 @@ def canny(image):
 #     set_motor_power(MOTOR_LEFT, )
 
 
-
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
@@ -88,10 +86,10 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
 
         img_birdseye = birdsEyeTransform(lane_image)
-        img_blackwhite = filterBlackWhite(img_birdseye)
+        #img_blackwhite = filterBlackWhite(img_birdseye)
         img_canny = canny(img_birdseye)
-        cntPts = getCountorPts(img_canny)
-        cv2.imshow("lineVision", img_blackwhite)
+        #cntPts = getCountorPts(img_canny)
+        cv2.imshow("lineVision", img_canny)
         cv2.waitKey(1)
 
 
