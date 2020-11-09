@@ -33,11 +33,11 @@ def birdsEyeTransform(image):
     return warped_img
 
 
-# def filterBlackWhite(image):
-#
-#     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
-#     return image_black_white
+def filterBlackWhite(image):
+
+    image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
+    return image_black_white
 
 
 
