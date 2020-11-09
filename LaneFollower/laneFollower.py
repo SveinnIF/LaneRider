@@ -87,6 +87,7 @@ with picamera.PiCamera() as camera:
 
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
+        img_birdseye2 = birdsEyeTransform(lane_image)
         #img_blackwhite = filterBlackWhite(img_birdseye)
         #cntPts = getCountorPts(img_canny)
         cv2.imshow("lineVision", img_canny)
