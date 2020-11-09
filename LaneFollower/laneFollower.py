@@ -52,7 +52,7 @@ def birdsEyeTransform(image):
 #     #pixelpoints = np.transpose(np.nonzero(mask))
 #     #pixelpoints = cv2.findNonZero(mask)
 
-def
+#def
 
 
 def canny(image):
