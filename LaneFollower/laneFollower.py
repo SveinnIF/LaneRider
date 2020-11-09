@@ -82,18 +82,13 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        #print(lane_image.shape)
         #cropped_image = CropImageFromTop(lane_image, 60)
-        #print(cropped_image.shape)
         #canny_image = canny(lane_image)
-        #print(waypoints)
-        #print(lines)
+
         img_birdseye = birdsEyeTransform(lane_image)
         img_blackwhite = filterBlackWhite(img_birdseye)
         img_canny = canny(img_birdseye)
         cntPts = getCountorPts(img_canny)
-        #findPts(img_canny)
-        #print(img_birdseye.shape)
         cv2.imshow("lineVision", img_blackwhite)
         cv2.waitKey(1)
 
