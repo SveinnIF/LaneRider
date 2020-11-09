@@ -90,7 +90,7 @@ with picamera.PiCamera() as camera:
         #print(lines)
         img_birdseye = birdsEyeTransform(lane_image)
         img_blackwhite = filterBlackWhite(img_birdseye)
-        img_canny = canny(img_blackwhite)
+        img_canny = canny(img_birdseye)
         cntPts = getCountorPts(img_canny)
         #findPts(img_canny)
         #print(img_birdseye.shape)
