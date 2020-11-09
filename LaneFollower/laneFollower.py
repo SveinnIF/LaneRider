@@ -90,6 +90,7 @@ with picamera.PiCamera() as camera:
         #img_blackwhite = filterBlackWhite(img_birdseye)
         #cntPts = getCountorPts(img_canny)
         cv2.imshow("lineVision", img_canny)
+        cv2.imshow("lineVision1", img_birdseye)
         cv2.waitKey(1)
 
 
