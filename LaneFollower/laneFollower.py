@@ -42,8 +42,8 @@ def birdsEyeTransform(image):
 #
 def getCountorPts(image):
     #image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(image, 127, 255, 0)
-    im, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_FLOODFILL, cv2.CHAIN_APPROX_NONE)
+    #ret, thresh = cv2.threshold(image, 127, 255, 0)
+    im, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     print(contours)
     cnt = contours[0].reshape(-1, 2)
     print(cnt)
@@ -52,8 +52,7 @@ def getCountorPts(image):
     cv2.drawContours(mask, [cnt], 0, 255, -1)
     pixelpoints = np.transpose(np.nonzero(mask))
     pixelpoints = cv2.findNonZero(mask)
-#
-# def
+
 
 
 def canny(image):
