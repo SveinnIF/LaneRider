@@ -98,7 +98,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
-        img_birdseye2 = birdsEyeTransform(lane_image)
+        img_birdseye2 = birdsEyeTransform(cv2.cvtColor(lane_image, cv2.COLOR_BGR2GRAY))
         img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
