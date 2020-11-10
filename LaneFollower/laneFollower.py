@@ -66,6 +66,17 @@ def canny(image):
     canny = cv2.Canny(blur,155,255)
     return canny
 
+
+def convolutetheprogram(image):
+
+    KERNEL = [-1,-1,2,2,-1,-1]
+    out_image = np.copy(image)
+
+    for i in range(len(image)):
+       out_image[i] = np.convolve(KERNEL, image[i])
+    return out_image
+
+
 # MOTION CONTROL FUNCTIONS
 # Functions that move or determine the path of the robot
 
@@ -85,18 +96,16 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         #cropped_image = CropImageFromTop(lane_image, 60)
         #canny_image = canny(lane_image)
-        print(lane_image.shape)
-
-        print(lane_image.shape)
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
         img_birdseye2 = birdsEyeTransform(lane_image)
+        img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
         #cntPts = getCountorPts(img_canny)
         cv2.imshow("lineVision", img_canny)
         cv2.imshow("lineVision1", img_birdseye)
-        cv2.imshow("lineVision2", img_birdseye2)
+        cv2.imshow("lineVision2", img_convolutional)
         cv2.waitKey(1)
 
 
