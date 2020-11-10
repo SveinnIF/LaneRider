@@ -20,7 +20,7 @@ TARGET_W = imageWidth
 
 # Birdseye transform lookup table
 src = np.float32([[0, TARGET_H], [TARGET_W, TARGET_H], [0, 0], [TARGET_W, 0]])
-dst = np.float32([[300, TARGET_H], [340, TARGET_H], [0, 0], [TARGET_W, 0]])
+dst = np.float32([[150, TARGET_H], [490, TARGET_H], [0, 0], [TARGET_W, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
 # IMAGE PROCESSING FUNCTIONS
@@ -85,7 +85,7 @@ with picamera.PiCamera() as camera:
         #cropped_image = CropImageFromTop(lane_image, 60)
         #canny_image = canny(lane_image)
         print(lane_image.shape)
-        #lane_image = lane_image[280:(280+TARGET_H), 0:TARGET_W]
+        lane_image = lane_image[280:(280+TARGET_H), 0:TARGET_W]
         print(lane_image.shape)
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
