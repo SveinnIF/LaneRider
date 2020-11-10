@@ -20,7 +20,7 @@ TARGET_W = imageWidth
 
 # Birdseye transform lookup table
 src = np.float32([[0, TARGET_H], [imageWidth, TARGET_H], [0, 0], [imageWidth, 0]])
-dst = np.float32([[imageWidth / 2 - 35, TARGET_H], [imageWidth / 2 + 35, TARGET_H], [0, 0], [imageWidth, 0]])
+dst = np.float32([[300, TARGET_H], [340, TARGET_H], [0, 0], [imageWidth, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
 # IMAGE PROCESSING FUNCTIONS
