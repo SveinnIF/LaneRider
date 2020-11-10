@@ -84,7 +84,7 @@ with picamera.PiCamera() as camera:
         lane_image = np.copy(image)
         #cropped_image = CropImageFromTop(lane_image, 60)
         #canny_image = canny(lane_image)
-        lane_image = lane_image[cropTop:imageHeight, 0:imageWidth]
+        lane_image = lane_image[len(lane_image)/2:imageHeight, 0:imageWidth]
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
         img_birdseye2 = birdsEyeTransform(lane_image)
