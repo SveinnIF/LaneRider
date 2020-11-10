@@ -123,6 +123,7 @@ with picamera.PiCamera() as camera:
         #cntPts = getCountorPts(img_canny)
         cv2.imshow("lineVision", img_canny)
         cv2.imshow("lineVision1", img_birdseye)
+        cv2.imshow("lineVision1", img_birdseye2)
         #cv2.imshow("lineVision2", img_convolutional)
         cv2.waitKey(1)
 
