@@ -16,10 +16,10 @@ imageWidth = 640
 # image cropping values
 cropTop = 200
 cropBottom = 0
-croppedHeight = imageHeight
+croppedHeight = imageHeight - cropTop - cropBottom
 
 # Birdseye transform lookup table
-src = np.float32([[0, croppedHeight], [imageWidth, croppedHeight], [0, 0], [imageWidth, 0]])
+src = np.float32([[cropTop, croppedHeight], [imageWidth, croppedHeight], [cropTop, 0], [imageWidth, 0]])
 dst = np.float32([[imageWidth / 2 - 35, croppedHeight], [imageWidth / 2 + 35, croppedHeight], [0, 0], [imageWidth, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
@@ -28,7 +28,7 @@ M = cv2.getPerspectiveTransform(src, dst)
 def birdsEyeTransform(image):
 
     #img = image[cropTop:imageHeight, 0:imageWidth]
-    warped_img = cv2.warpPerspective(image, M, (image.shape[0], image.shape[1]))
+    warped_img = cv2.warpPerspective(image, M, (image.shape[1], image.shape[0]))
 
     return warped_img
 
