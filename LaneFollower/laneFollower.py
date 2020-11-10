@@ -22,6 +22,7 @@ TARGET_W = imageWidth
 src = np.float32([[0, TARGET_H], [TARGET_W, TARGET_H], [0, 0], [TARGET_W, 0]])
 dst = np.float32([[165, TARGET_H], [475, TARGET_H], [0, 0], [TARGET_W, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
+Minv = cv2.getPerspectiveTransform(dst, src)
 
 # IMAGE PROCESSING FUNCTIONS
 # Functions that transform the input image
@@ -62,7 +63,7 @@ def canny(image):
     blur = cv2.GaussianBlur(gray, (5,5),0)
     #this derives the array and thereby detects the change in
     #intensity in nearby pixles
-    canny = cv2.Canny(blur,50,150)
+    canny = cv2.Canny(blur,155,255)
     return canny
 
 # MOTION CONTROL FUNCTIONS
