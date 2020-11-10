@@ -117,8 +117,8 @@ with picamera.PiCamera() as camera:
             x_arr, y_arr = splitCoordinateArray(contours)
             pol1 = np.polyfit(x_arr, y_arr, 2)
             print(pol1)
-            for i in range(TARGET_H):
-                cv2.rectangle(img_birdseye2, (int(pol1[0]*i+pol1[1]*i+pol1[2]),i), (int(pol1[0]*i+pol1[1]*i+pol1[2])+1,i+1), (0,255,0))
+            for i in range(TARGET_W):
+                cv2.rectangle(img_birdseye2, (i, int(pol1[0]*i+pol1[1]*i+pol1[2]), (i+1,int(pol1[0]*i+pol1[1]*i+pol1[2])+1), (0,255,0))
         #img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
