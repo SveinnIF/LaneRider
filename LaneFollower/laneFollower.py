@@ -29,7 +29,7 @@ Minv = cv2.getPerspectiveTransform(dst, src)
 def birdsEyeTransform(image):
 
     img = image[280:(280+TARGET_H), 0:TARGET_W]
-    warped_img = cv2.warpPerspective(image, M, (TARGET_W, TARGET_H))
+    warped_img = cv2.warpPerspective(img, M, (TARGET_W, TARGET_H))
 
     return warped_img
 
@@ -39,21 +39,21 @@ def birdsEyeTransform(image):
 #     image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 #     (tresh, image_black_white) = cv2.threshold(image_grey_scale, 127, 255, cv2.THRESH_BINARY)
 #     return image_black_white
-
-def getCountorPts(image):
-    #image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(image, 127, 255, 0)
-    im, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    print(contours)
-    cnt = contours[0].reshape(-1, 2)
-    print(cnt)
-
-    #mask = np.zeros(image.shape, np.uint8)
-    #cv2.drawContours(mask, [cnt], 0, 255, -1)
-    #pixelpoints = np.transpose(np.nonzero(mask))
-    #pixelpoints = cv2.findNonZero(mask)
-
-#def
+#
+# def getCountorPts(image):
+#     #image_grey_scale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#     ret, thresh = cv2.threshold(image, 127, 255, 0)
+#     im, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+#     print(contours)
+#     cnt = contours[0].reshape(-1, 2)
+#     print(cnt)
+#
+#     mask = np.zeros(image.shape, np.uint8)
+#     cv2.drawContours(mask, [cnt], 0, 255, -1)
+#     pixelpoints = np.transpose(np.nonzero(mask))
+#     pixelpoints = cv2.findNonZero(mask)
+#
+# def
 
 
 def canny(image):
@@ -91,7 +91,7 @@ with picamera.PiCamera() as camera:
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
         img_birdseye2 = birdsEyeTransform(lane_image)
-        getCountorPts(img_birdseye)
+        # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
         #cntPts = getCountorPts(img_canny)
         cv2.imshow("lineVision", img_canny)
