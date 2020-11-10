@@ -13,14 +13,14 @@ GPG = EasyGoPiGo3()
 # Camera Values
 imageHeight = 480
 imageWidth = 640
-# image cropping values
-cropTop = 200
-cropBottom = 0
-croppedHeight = imageHeight - cropTop - cropBottom
+# Ideal dimensions of final image
+TARGET_H = 280
+TARGET_W = imageWidth
+
 
 # Birdseye transform lookup table
-src = np.float32([[0, croppedHeight], [imageWidth, croppedHeight], [0, cropTop], [imageWidth, cropTop]])
-dst = np.float32([[imageWidth / 2 - 35, croppedHeight], [imageWidth / 2 + 35, croppedHeight], [0, cropTop], [imageWidth, cropTop]])
+src = np.float32([[0, TARGET_H], [imageWidth, TARGET_H], [0, 0], [imageWidth, 0]])
+dst = np.float32([[imageWidth / 2 - 35, TARGET_H], [imageWidth / 2 + 35, TARGET_H], [0, 0], [imageWidth, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
 # IMAGE PROCESSING FUNCTIONS
@@ -28,7 +28,7 @@ M = cv2.getPerspectiveTransform(src, dst)
 def birdsEyeTransform(image):
 
     #img = image[cropTop:imageHeight, 0:imageWidth]
-    warped_img = cv2.warpPerspective(image, M, (image.shape[1], image.shape[0]))
+    warped_img = cv2.warpPerspective(image, M, (TARGET_W, TARGET_H))
 
     return warped_img
 
@@ -85,7 +85,7 @@ with picamera.PiCamera() as camera:
         #cropped_image = CropImageFromTop(lane_image, 60)
         #canny_image = canny(lane_image)
         print(lane_image.shape)
-        lane_image = lane_image[cropTop:imageHeight, 0:imageWidth]
+        lane_image = lane_image[200:(200+imageHeight), 0:imageWidth]
         print(lane_image.shape)
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
