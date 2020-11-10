@@ -49,7 +49,7 @@ def getCountorPts(image):
     # cnt = contours[0].reshape(-1, 2)
     #print(cnt)
 
-
+    #
     # mask = np.zeros(image.shape, np.uint8)
     # cv2.drawContours(mask, contours, 0, 255, -1)
     # pixelpoints = np.transpose(np.nonzero(mask))
@@ -111,6 +111,8 @@ with picamera.PiCamera() as camera:
         img_birdseye = birdsEyeTransform(img_canny)
         img_birdseye2 = birdsEyeTransform(lane_image)
         contours = getCountorPts(img_birdseye)
+        mask = np.zeros(image.shape, np.uint8)
+        cv2.drawContours(mask, contours, 0, 255, -1)
         if len(contours) > 0:
             x_arr, y_arr = splitCoordinateArray(contours)
             pol1 = np.polyfit(x_arr, y_arr, 2)
