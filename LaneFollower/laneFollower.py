@@ -49,7 +49,7 @@ def getCountorPts(image):
     #print(cnt)
 
     mask = np.zeros(image.shape, np.uint8)
-    #cv2.drawContours(mask, [cnt], 0, 255, -1)
+    cv2.drawContours(mask, contours, 0, 255, -1)
     pixelpoints = np.transpose(np.nonzero(mask))
     pixelpoints = cv2.findNonZero(mask)
 
