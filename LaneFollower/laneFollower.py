@@ -46,18 +46,26 @@ def getCountorPts(image):
     im, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     print(contours.shape)
     print(contours)
-    cnt = contours[0].reshape(-1, 2)
+    return contours
+    # cnt = contours[0].reshape(-1, 2)
     #print(cnt)
 
-    mask = np.zeros(image.shape, np.uint8)
-    cv2.drawContours(mask, contours, 0, 255, -1)
-    pixelpoints = np.transpose(np.nonzero(mask))
-    pixelpoints = cv2.findNonZero(mask)
+
+    # mask = np.zeros(image.shape, np.uint8)
+    # cv2.drawContours(mask, contours, 0, 255, -1)
+    # pixelpoints = np.transpose(np.nonzero(mask))
+    # pixelpoints = cv2.findNonZero(mask)
+
 
 def splitCoordinateArray(contours):
-    x_arr = np.array([])
-    y_arr = np.array([])
-    print
+
+    x_arr = []
+    y_arr = []
+
+    for i in range(len(contours)):
+        x_arr.append(contours[i][0][0])
+        y_arr.append(contours[i][0][1])
+    return np.array(x_arr), np.array(y_arr)
 
 
 def canny(image):
@@ -102,7 +110,9 @@ with picamera.PiCamera() as camera:
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
         img_birdseye2 = birdsEyeTransform(lane_image)
-        getCountorPts(img_birdseye)
+        contours = getCountorPts(img_birdseye)
+        x_arr, y_arr = splitCoordinateArray(contours)
+        print(np.polyfit(x_arr, y_arr, 2))
         #img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
