@@ -19,8 +19,8 @@ TARGET_W = imageWidth
 
 
 # Birdseye transform lookup table
-src = np.float32([[0, TARGET_H], [imageWidth, TARGET_H], [0, 0], [imageWidth, 0]])
-dst = np.float32([[300, TARGET_H], [340, TARGET_H], [0, 0], [imageWidth, 0]])
+src = np.float32([[0, TARGET_H], [TARGET_W, TARGET_H], [0, 0], [TARGET_W, 0]])
+dst = np.float32([[300, TARGET_H], [340, TARGET_H], [0, 0], [TARGET_W, 0]])
 M = cv2.getPerspectiveTransform(src, dst)
 
 # IMAGE PROCESSING FUNCTIONS
@@ -28,7 +28,7 @@ M = cv2.getPerspectiveTransform(src, dst)
 def birdsEyeTransform(image):
 
     #img = image[cropTop:imageHeight, 0:imageWidth]
-    warped_img = cv2.warpPerspective(image, M, (TARGET_W, TARGET_H))
+    warped_img = cv2.warpPerspective(image, M, (TARGET_H, TARGET_W))
 
     return warped_img
 
