@@ -28,7 +28,7 @@ M = cv2.getPerspectiveTransform(src, dst)
 def birdsEyeTransform(image):
 
     #img = image[cropTop:imageHeight, 0:imageWidth]
-    warped_img = cv2.warpPerspective(img, M, (imageWidth, croppedHeight))
+    warped_img = cv2.warpPerspective(img, M, (imageWidth, imageHeight))
 
     return warped_img
 
