@@ -113,7 +113,7 @@ with picamera.PiCamera() as camera:
         contours = getCountorPts(img_birdseye)
         if len(contours) > 0:
             x_arr, y_arr = splitCoordinateArray(contours)
-            print(np.polyfit(x_arr, y_arr, 2))
+            pol1 = np.polyfit(x_arr, y_arr, 2))
 
         #img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
