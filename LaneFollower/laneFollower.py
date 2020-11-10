@@ -14,7 +14,7 @@ GPG = EasyGoPiGo3()
 imageHeight = 480
 imageWidth = 640
 # Ideal dimensions of final image
-TARGET_H = 200
+TARGET_H = 480
 TARGET_W = imageWidth
 
 
@@ -28,7 +28,7 @@ M = cv2.getPerspectiveTransform(src, dst)
 def birdsEyeTransform(image):
 
     #img = image[cropTop:imageHeight, 0:imageWidth]
-    warped_img = cv2.warpPerspective(image, M, (TARGET_H, TARGET_W))
+    warped_img = cv2.warpPerspective(image, M, (TARGET_W, TARGET_H))
 
     return warped_img
 
