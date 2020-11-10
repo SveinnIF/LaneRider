@@ -16,7 +16,7 @@ imageWidth = 640
 # image cropping values
 cropTop = 200
 cropBottom = 0
-croppedHeight = 480
+croppedHeight = imageHeight - cropTop - cropBottom
 
 # Birdseye transform lookup table
 src = np.float32([[0, croppedHeight], [imageWidth, croppedHeight], [0, cropTop], [imageWidth, cropTop]])
