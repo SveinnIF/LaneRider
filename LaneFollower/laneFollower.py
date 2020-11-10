@@ -112,7 +112,7 @@ with picamera.PiCamera() as camera:
         img_birdseye2 = birdsEyeTransform(lane_image)
         contours = getCountorPts(img_birdseye)
         mask = np.zeros(image.shape, np.uint8)
-        cv2.drawContours(mask, contours, 0, 255, -1)
+        cv2.drawContours(img_birdseye, contours, 0, 255, -1)
         if len(contours) > 0:
             x_arr, y_arr = splitCoordinateArray(contours)
             pol1 = np.polyfit(x_arr, y_arr, 2)
