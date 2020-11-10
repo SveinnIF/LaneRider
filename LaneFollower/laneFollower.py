@@ -72,7 +72,7 @@ def convolutetheprogram(image):
     KERNEL = [-1, -1, 2, 2,-1,-1]
     out_image = cv2.cvtColor(np.copy(image), cv2.COLOR_BGR2GRAY)
     for i in range(len(image)):
-       out_image[i] = np.convolve(KERNEL, out_image[i])
+       out_image[i] = np.convolve(KERNEL, out_image[i], "same")
     return out_image
 
 
