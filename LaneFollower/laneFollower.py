@@ -70,10 +70,9 @@ def canny(image):
 def convolutetheprogram(image):
 
     KERNEL = [-1,-1,2,2,-1,-1]
-    out_image = np.copy(image)
-
+    out_image = cv2.cvtColor(np.copy(image), cv2.COLOR_BGR2GRAY)
     for i in range(len(image)):
-       out_image[i] = np.convolve(KERNEL, image[i])
+       out_image[i] = np.convolve(KERNEL, out_image[i])
     return out_image
 
 
@@ -98,7 +97,7 @@ with picamera.PiCamera() as camera:
         #canny_image = canny(lane_image)
         img_canny = canny(lane_image)
         img_birdseye = birdsEyeTransform(img_canny)
-        img_birdseye2 = birdsEyeTransform(cv2.cvtColor(lane_image, cv2.COLOR_BGR2GRAY))
+        img_birdseye2 = birdsEyeTransform()
         img_convolutional = convolutetheprogram(img_birdseye2)
         # getCountorPts(img_birdseye)
         #img_blackwhite = filterBlackWhite(img_birdseye)
