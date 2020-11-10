@@ -62,8 +62,9 @@ def splitCoordinateArray(contours):
     y_arr = []
 
     for i in range(len(contours)):
-        x_arr.append(contours[i][0][0])
-        y_arr.append(contours[i][0][1])
+        for j in range(len(contours[i])):
+            x_arr.append(contours[i][j][0][0])
+            y_arr.append(contours[i][j][0][1])
     return np.array(x_arr), np.array(y_arr)
 
 
