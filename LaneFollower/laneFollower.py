@@ -45,11 +45,11 @@ def getCountorPts(image):
     #ret, thresh = cv2.threshold(image, 127, 255, 0)
     im, contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     print(contours)
-    cnt = contours[0].reshape(-1, 2)
-    print(cnt)
+    #cnt = contours[0].reshape(-1, 2)
+    #print(cnt)
 
     mask = np.zeros(image.shape, np.uint8)
-    cv2.drawContours(mask, [cnt], 0, 255, -1)
+    #cv2.drawContours(mask, [cnt], 0, 255, -1)
     pixelpoints = np.transpose(np.nonzero(mask))
     pixelpoints = cv2.findNonZero(mask)
 
