@@ -14,7 +14,7 @@ GPG = EasyGoPiGo3()
 imageHeight = 480
 imageWidth = 640
 # Ideal dimensions of final image
-TARGET_H = 480
+TARGET_H = 200
 TARGET_W = imageWidth
 
 
