@@ -115,7 +115,8 @@ with picamera.PiCamera() as camera:
         cv2.drawContours(img_birdseye2, contours, 0, 255, -1)
         if len(contours) > 0:
             x_arr, y_arr = splitCoordinateArray(contours)
-            pol1 = np.polynomial.polynomial.Polynomial.fit(x_arr, y_arr, 2)
+            #pol1 = np.polynomial.polynomial.Polynomial.fit(x_arr, y_arr, 2)
+            pol1 = np.polyfit(x_arr, y_arr, 2)
             print(pol1)
             for i in range(TARGET_W):
                 cv2.rectangle(img_birdseye2, (i, int(pol1[0]*i+pol1[1]*i+pol1[2])), (i+1, int(pol1[0]*i+pol1[1]*i+pol1[2] + 1) ), (0,255,0))
