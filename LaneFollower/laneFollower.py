@@ -52,9 +52,9 @@ with picamera.PiCamera() as camera:
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 0, 480, 0, 640)
+        cv2.imshow("lineVision", croppedImage)
         print(croppedImage)
         thresh, contours = findContours(croppedImage)
         motorControl(thresh, contours)
-        cv2.imshow("lineVision", croppedImage)
         cv2.imshow("lineVision1", thresh)
         cv2.waitKey(1)
