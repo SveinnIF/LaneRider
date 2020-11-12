@@ -6,86 +6,44 @@ import time
 
 gpg = EasyGoPiGo3()
 
-def canny(image):
-    #this turns the image grey
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    #this blurs the image, making edge detection more reliable
-    blur = cv2.GaussianBlur(gray, (5,5),0)
-    #this derives the array and thereby detects the change in
-    #intensity in nearby pixles
-    canny = cv2.Canny(blur,50,150)
-    return canny
 
-def display_lines(image, lines):
-    line_image = np.zeros_like(image)
-    if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line.reshape(4)
-            cv2.line(line_image,(x1, y1), (x2, y2), (255,0,0),10)
-            print((x1, y1),(x2, y2))
-    return line_image
-
-def waypoint_detection(image):
-    NUM_IGNORED_ROWS = 60
-    NUM_WAYPOINTS = 1
-
-    num_rows = len(image)
-    num_relevant_rows = (num_rows - NUM_IGNORED_ROWS)
+def cropImage(image, top, bottom, left, right):
+    newImage = image[top:bottom, left:right]
+    return newImage
 
 
-    step = num_relevant_rows // (NUM_WAYPOINTS + 1)
-    start = len(image[0])-(NUM_IGNORED_ROWS + step)
-    waypoints = []
-    for i in range(start, 0, -step):
-        for j in range(len(image[i]) - 1, -1, -1):
-            if image[i][j] == 255:
-                waypoints.append((i,j))
-                break
-    if(waypoints == []):
-        waypoints = [(0,len(image[0]))]
-    return waypoints
+def findContours(image):
+    newImage = cv2.threshold(image, 180, 255, cv2.COLOR_BGR2GRAY)
+    blurredImage = cv2.GaussianBlur(newImage, (5,5), 0)
+    ret, thresh = cv2.threshold(blurredImage, 150,255,cv2.THRESH_BINARY)
+    contours, hierarchy = cv2.findContours(thresh.copy(), 1, cv2.CHAIN_APPROX_NONE)
+    return thresh, contours
 
+def motorControl(image, contours):
+    if len(contours) > 0:
+        contour_area = max(contours, key=cv2.contourArea)
+        moment = cv2.moments(contour_area)
 
-def moveGoPiGo(waypoint):
-    if ((waypoint[0][1] < (len(image[0])/2)+10) and (waypoint[0][1] > (len(image[0])/2)-10)):
-        gpg.forward()
-        time.sleep(0.1)
-        gpg.stop()
+        cx = int(moment['m10']/moment['m00'])
+        cy = int(moment['m01']/moment['m00'])
 
-    print("FUCK YOU")
-    print(int(len(image[0])/2))
-    print(waypoint[0][1] < (int(len(image[0])/2)))
-    print(waypoint[0][1] > (int(len(image[0])/2)))
-    if (waypoint[0][1] < (int(len(image[0])/2))):
-        print("inside if 1")
-        gpg.left()
-        
-        time.sleep(0.05)
-        gpg.stop()
-        print("bottom of if 1")
-    if (waypoint[0][1] > (int(len(image[0])/2))):
-        print("inside if 2")
-        gpg.right()
-       
-        time.sleep(0.05)
-        gpg.stop()
+        cv2.line(image,(cx, 0), (cx,640), (255, 0, 0), 1)
+        cv2.line(image,(0, cy), (420, cy), (255, 0, 0), 1)
 
-    
-        
+        cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-def regionOfInterest(image):
-    amountTaken = 60
-    rectangle = np.array([
-        [(0,imageHeight), (0, amountTaken), (imageWidth,amountTaken), (imageWidth, imageHeight)]
-        ])
-    mask = np.zeros_like(image)
-    cv2.fillPoly(mask, rectangle, 255)
-    masked_image = cv2.bitwise_and(image, mask)
-    return masked_image
+        if cx >= 120:
+            gpg.left()
+        if 120 > cx > 50:
+            gpg.forward()
+        if cx < 50:
+            gpg.right
+        else:
+            print("Can't see the line")
 
+imageHeight = 480
+imageWidth = 640
 
-imageHeight = 384
-imageWidth = 512
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
@@ -93,14 +51,9 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        canny_image = canny(lane_image)
-        croppedImage = regionOfInterest(canny_image)
-        waypoints = waypoint_detection(croppedImage)
-        
-        moveGoPiGo(waypoints)
-#        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=10)
-#        #print(lines)
-#        line_image = display_lines(lane_image, lines)
-#        combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
-        cv2.imshow("lineVision",canny_image)
+        croppedImage = cropImage(lane_image, 60, 480, 0, 640)
+        thresh, contours = findContours(croppedImage)
+        motorControl(thresh, contours)
+        cv2.imshow("lineVision", croppedImage)
+        cv2.imshow("lineVision1", thresh)
         cv2.waitKey(1)
