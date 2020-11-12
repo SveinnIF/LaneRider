@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import picamera
 from easygopigo3 import EasyGoPiGo3
-import time
 
 gpg = EasyGoPiGo3()
 
@@ -37,7 +36,7 @@ def motorControl(image, contours):
         if 120 > cx > 50:
             gpg.forward()
         if cx < 50:
-            gpg.right
+            gpg.right()
         else:
             print("Can't see the line")
 
