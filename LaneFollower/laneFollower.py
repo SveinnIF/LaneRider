@@ -12,7 +12,7 @@ def cropImage(image, top, bottom, left, right):
 
 
 def findContours(image):
-    _, newImage = cv2.cvtColor(image, 127, 255, cv2.COLOR_BGR2GRAY)
+    _, newImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
     _, img_bw = cv2.threshold(blurredImage, 127, 255, cv2.THRESH_BINARY_INV)
     print(img_bw)
