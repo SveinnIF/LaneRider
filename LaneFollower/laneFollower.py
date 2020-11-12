@@ -12,10 +12,10 @@ def cropImage(image, top, bottom, left, right):
 
 
 def findContours(image):
-    _, newImage = cv2.threshold(image, 127, 255, cv2.COLOR_BGR2GRAY)
-    blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
+    _, img_gs = cv2.threshold(image, 127, 255, cv2.COLOR_BGR2GRAY)
+    blurredImage = cv2.GaussianBlur(img_gs, (5, 5), 0)
     _, img_bw = cv2.threshold(blurredImage, 127, 255, cv2.THRESH_BINARY)
-    print(img_bw)
+    #print(img_bw)
     img_cnt, contours, _ = cv2.findContours(img_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
@@ -51,7 +51,7 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        croppedImage = cropImage(lane_image, 60, 480, 0, 640)
+        croppedImage = cropImage(lane_image, 0, 480, 0, 640)
         print(croppedImage)
         thresh, contours = findContours(croppedImage)
         motorControl(thresh, contours)
