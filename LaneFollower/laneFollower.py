@@ -17,7 +17,7 @@ def findContours(image):
     #_, img_bw = cv2.threshold(blurredImage, 127, 255, cv2.THRESH_BINARY)
     #print(img_bw)
     img_cnt, contours, _ = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    return img_bw, contours
+    return img_cnt, contours
 
 def motorControl(image, contours):
     if len(contours) > 0:
