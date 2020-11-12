@@ -15,8 +15,6 @@ def findContours(image):
     newImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
     _, img_bw = cv2.threshold(blurredImage, 127, 255, cv2.THRESH_BINARY)
-    print(img_bw)
-    print(img_bw.shape)
     im, contours, hierarchy = cv2.findContours(img_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return img_bw, contours
 
@@ -33,11 +31,11 @@ def motorControl(image, contours):
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-        if cx >= 120:
+        if cx >= 340:
             gpg.left()
-        if 120 > cx > 50:
+        if 340 > cx > 300:
             gpg.forward()
-        if cx < 50:
+        if cx < 300:
             gpg.right()
         else:
             print("Can't see the line")
