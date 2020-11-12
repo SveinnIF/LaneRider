@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import picamera
 import math
-from GoPiGo3 import gopigo3
-gpg = gopigo3()
+from easygopigo3 import EasyGoPiGo3
+gpg = EasyGoPiGo3()
 
 
 def cropImage(image, top, bottom, left, right):
