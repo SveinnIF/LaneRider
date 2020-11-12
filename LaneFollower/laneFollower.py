@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 import picamera
+import math
 from easygopigo3 import EasyGoPiGo3
-
 gpg = EasyGoPiGo3()
 
 
@@ -31,14 +31,16 @@ def motorControl(image, contours):
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-        if cx >= 340:
-            gpg.left()
-        if 340 > cx > 300:
-            gpg.forward()
-        if cx < 300:
-            gpg.right()
-        else:
-            print("Can't see the line")
+        gpg.set_motor_power(MOTOR_LEFT, 50 - 50 * math.cos((math.pi / 640) * cx)
+        gpg.set_motor_power(MOTOR_RIGHT, 50 - 50 * math.cos((math.pi / 640) * cx)
+        # if cx >= 340:
+        #     gpg.left()
+        # if 340 > cx > 300:
+        #     gpg.forward()
+        # if cx < 300:
+        #     gpg.right()
+        # else:
+        #     print("Can't see the line")
 
 imageHeight = 480
 imageWidth = 640
