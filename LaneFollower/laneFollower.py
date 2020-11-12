@@ -55,6 +55,6 @@ with picamera.PiCamera() as camera:
         cv2.imshow("lineVision", croppedImage)
         print(croppedImage)
         #thresh, contours = findContours(croppedImage)
-        motorControl(thresh, contours)
+        #motorControl(thresh, contours)
         cv2.imshow("lineVision1", thresh)
         cv2.waitKey(1)
