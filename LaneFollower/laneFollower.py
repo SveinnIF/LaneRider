@@ -13,10 +13,10 @@ def cropImage(image, top, bottom, left, right):
 
 
 def findContours(image):
-    _, newImage = cv2.threshold(image, 100, 255, cv2.COLOR_BGR2GRAY)
+    _, newImage = cv2.threshold(image, 150, 255, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
-    ret, thresh = cv2.threshold(blurredImage, 150,255,cv2.THRESH_BINARY)
-    contours = cv2.findContours(thresh.copy(), cv2.RETR_FLOODFILL, cv2.CHAIN_APPROX_NONE)
+    _, thresh = cv2.threshold(blurredImage, 150, 255, cv2.THRESH_BINARY)
+    contours = cv2.findContours(thresh, cv2.RETR_FLOODFILL, cv2.CHAIN_APPROX_NONE)
     return thresh, contours
 
 def motorControl(image, contours):
