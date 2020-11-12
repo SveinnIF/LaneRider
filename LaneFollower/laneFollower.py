@@ -13,8 +13,8 @@ def cropImage(image, top, bottom, left, right):
 
 
 def findContours(image):
-    newImage = cv2.threshold(image, 180, 255, cv2.COLOR_BGR2GRAY)
-    blurredImage = cv2.GaussianBlur(newImage, (5,5), 0)
+    newImage = cv2.threshold(image, 100, 255, cv2.COLOR_BGR2GRAY)
+    blurredImage = cv2.GaussianBlur(newImage, (5, 5), )
     ret, thresh = cv2.threshold(blurredImage, 150,255,cv2.THRESH_BINARY)
     contours, hierarchy = cv2.findContours(thresh.copy(), 1, cv2.CHAIN_APPROX_NONE)
     return thresh, contours
