@@ -16,7 +16,7 @@ def findContours(image):
     _, newImage = cv2.threshold(image, 100, 255, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
     ret, thresh = cv2.threshold(blurredImage, 150,255,cv2.THRESH_BINARY)
-    contours, hierarchy = cv2.findContours(thresh.copy(), 1, cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     return thresh, contours
 
 def motorControl(image, contours):
