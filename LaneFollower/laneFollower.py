@@ -36,8 +36,8 @@ def motorControl(image, imageForDrawing, contours):
         else:
             return
 
-        cv2.line(imageForDrawing, (cx-5, cy), (cx+5, width), (255, 0, 0), 2)
-        cv2.line(imageForDrawing, (cx, cy-5), (height, cy+5), (255, 0, 0), 2)
+        cv2.line(imageForDrawing, (cx-5, cy), (cx+5, cy), (255, 0, 0), 2)
+        cv2.line(imageForDrawing, (cx, cy-5), (cx, cy+5), (255, 0, 0), 2)
 
         cv2.drawContours(imageForDrawing, contours, -1, (0, 255, 0), 1)
 
