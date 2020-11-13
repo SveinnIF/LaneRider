@@ -29,15 +29,15 @@ def motorControl(image, imageForDrawing, contours):
         print(width)
         height = len(image)
         print(height)
-        
+
         if(moment['m00'] != 0):
             cx = int(moment['m10'] / moment['m00'])
             cy = int(moment['m01'] / moment['m00'])
         else:
             return
 
-        cv2.line(imageForDrawing, (cx, 0), (cx, width), (255, 0, 0), 1)
-        cv2.line(imageForDrawing, (0, cy), (height, cy), (255, 0, 0), 1)
+        cv2.line(imageForDrawing, (cx-5, cy), (cx+5, width), (255, 0, 0), 2)
+        cv2.line(imageForDrawing, (cx, cy-5), (height, cy+5), (255, 0, 0), 2)
 
         cv2.drawContours(imageForDrawing, contours, -1, (0, 255, 0), 1)
 
