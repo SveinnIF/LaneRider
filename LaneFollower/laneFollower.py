@@ -69,11 +69,11 @@ with picamera.PiCamera() as camera:
         gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
-        resized_image = cv2.resize(croppedImage, (100, 240))
+        resized_image = cv2.resize(croppedImage, (240, 100))
         thresh, contours = findContours(resized_image)
         #gpg.set_speed(30)
         motorControl(thresh, resized_image, contours)
-        cv2.imshow("lineVision", croppedImage)
+        cv2.imshow("lineVision", resized_image)
         cv2.imshow("lineVision1", thresh)
 
         cv2.waitKey(1)
