@@ -31,6 +31,7 @@ def motorControl(image, contours):
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
         
+        gpg.set_speed(100)
         gpg.steer(50 - 50 * math.cos((math.pi / 640) * cx), 50 - 50 * -math.cos((math.pi / 640) * cx))
         # if cx >= 340:
         #     gpg.left()
