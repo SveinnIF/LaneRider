@@ -15,7 +15,7 @@ def findContours(image):
     newImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
     _, img_bw = cv2.threshold(blurredImage, 190, 255, cv2.THRESH_BINARY)
-    im, contours, hierarchy = cv2.findContours(img_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
 def motorControl(image, imageForDrawing, contours):
@@ -59,5 +59,5 @@ with picamera.PiCamera() as camera:
         motorControl(thresh, croppedImage, contours)
         cv2.imshow("lineVision", croppedImage)
         cv2.imshow("lineVision1", thresh)
-        gpg.set_speed(0)
+
         cv2.waitKey(1)
