@@ -23,16 +23,22 @@ def motorControl(image, imageForDrawing, contours):
         contour_area = max(contours, key=cv2.contourArea)
         moment = cv2.moments(contour_area)
 
+        width = len(image[0])
+        height = len(image)
+
         cx = int(moment['m10']/moment['m00'])
         cy = int(moment['m01']/moment['m00'])
 
-        cv2.line(imageForDrawing,(cx, 0), (cx,560), (255, 0, 0), 1)
-        cv2.line(imageForDrawing,(0, cy), (280, cy), (255, 0, 0), 1)
+        cv2.line(imageForDrawing,(cx, 0), (cx,width), (255, 0, 0), 1)
+        cv2.line(imageForDrawing,(0, cy), (height, cy), (255, 0, 0), 1)
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-        gpg.set_speed(150)
-        gpg.steer(100 - 120 * math.cos((math.pi / 560) * cx), 100 - 120 * -math.cos((math.pi / 560) * cx))
+        gpg.set_speed(100)
+        power_proportion = abs((cx-width/2)*100/width/2)
+        print(power_proportion)
+        gpg.steering(100-power_proportion,100+power_proportion)
+
     else:
         gpg.set_speed(0)
         # if cx >= 340:
