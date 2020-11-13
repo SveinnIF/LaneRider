@@ -37,7 +37,7 @@ def motorControl(image, imageForDrawing, contours):
         gpg.set_speed(100)
         power_proportion = abs((cx-width/2)*100/width/2)
         print(power_proportion)
-        gpg.steering(100-power_proportion,100+power_proportion)
+        gpg.steer(100-power_proportion,100+power_proportion)
 
     else:
         gpg.set_speed(0)
