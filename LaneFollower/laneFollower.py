@@ -36,8 +36,8 @@ def motorControl(image, imageForDrawing, contours):
         else:
             return
 
-        cv2.line(imageForDrawing, (cx-5, cy), (cx+5, cy), (255, 0, 0), 2)
-        cv2.line(imageForDrawing, (cx, cy-5), (cx, cy+5), (255, 0, 0), 2)
+        cv2.line(imageForDrawing, (cx-10, cy), (cx+10, cy), (255, 0, 0), 2)
+        cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (255, 0, 0), 2)
 
         cv2.drawContours(imageForDrawing, contours, -1, (0, 255, 0), 1)
 
@@ -69,10 +69,10 @@ with picamera.PiCamera() as camera:
         gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
-        cv2.resize(croppedImage, (100, 240))
-        thresh, contours = findContours(croppedImage)
+        resized_image = cv2.resize(croppedImage, (100, 240))
+        thresh, contours = findContours(resized_image)
         #gpg.set_speed(30)
-        motorControl(thresh, croppedImage, contours)
+        motorControl(thresh, resized_image, contours)
         cv2.imshow("lineVision", croppedImage)
         cv2.imshow("lineVision1", thresh)
 
