@@ -26,9 +26,7 @@ def motorControl(image, imageForDrawing, contours):
         moment = cv2.moments(contour_area)
 
         width = len(image[0])
-        print(width)
         height = len(image)
-        print(height)
 
         if(moment['m00'] != 0):
             cx = int(moment['m10'] / moment['m00'])
@@ -36,14 +34,14 @@ def motorControl(image, imageForDrawing, contours):
         else:
             return
 
-        cv2.line(imageForDrawing, (cx-10, cy), (cx+10, cy), (255, 0, 0), 2)
-        cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (255, 0, 0), 2)
-
         cv2.drawContours(imageForDrawing, contours, -1, (0, 255, 0), 1)
+        cv2.line(imageForDrawing, (cx-10, cy), (cx+10, cy), (0, 0, 255), 1)
+        cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (0, 0, 255), 1)
 
-        # power_proportion = abs(pow(cx - width / 2, 2) * 100 / pow(width, 2))
-        # print(power_proportion)
-        # gpg.steer(100 + power_proportion, 100 - power_proportion)
+
+        power_proportion = abs( (cx) - () )
+        print(power_proportion)
+        # gpg.steer(100 - power_proportion, 100 - power_proportion)
 
     else:
         gpg.set_speed(0)
