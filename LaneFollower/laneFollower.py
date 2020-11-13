@@ -27,11 +27,11 @@ def motorControl(image, contours):
         cy = int(moment['m01']/moment['m00'])
 
         cv2.line(image,(cx, 0), (cx,640), (255, 0, 0), 1)
-        cv2.line(image,(0, cy), (420, cy), (255, 0, 0), 1)
+        cv2.line(image,(0, cy), (280, cy), (255, 0, 0), 1)
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
         
-        gpg.steer(50 - 50 * math.cos((math.pi / 640) * cx), (50 - 50 * -math.cos((math.pi / 640) * cx)))
+        gpg.steer(50 - 50 * math.cos((math.pi / 640) * cx), 50 - 50 * -math.cos((math.pi / 640) * cx))
         # if cx >= 340:
         #     gpg.left()
         # if 340 > cx > 300:
@@ -51,7 +51,7 @@ with picamera.PiCamera() as camera:
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
-        croppedImage = cropImage(lane_image, 60, 480, 0, 640)
+        croppedImage = cropImage(lane_image, 200, 480, 0, 640)
         thresh, contours = findContours(croppedImage)
         motorControl(thresh, contours)
         cv2.imshow("lineVision", croppedImage)
