@@ -39,10 +39,15 @@ def motorControl(image, imageForDrawing, contours):
         cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (0, 0, 255), 1)
 
 
-        power_proportion = abs( (cx) - () )
+        power_proportion = abs(cx)
         print(power_proportion)
         # gpg.steer(100 - power_proportion, 100 - power_proportion)
-
+        if cx < width/3:
+            gpg.right()
+        if width/3 < cx < width*2/3:
+           # gpg.forward()
+        if cx < width*2/3:
+            gpg.left()
     else:
         gpg.set_speed(0)
         # if cx >= 340:
