@@ -26,7 +26,7 @@ def motorControl(image, imageForDrawing, contours):
         cx = int(moment['m10']/moment['m00'])
         cy = int(moment['m01']/moment['m00'])
 
-        cv2.line(imageForDrawing,(cx, 0), (cx,640), (255, 0, 0), 1)
+        cv2.line(imageForDrawing,(cx, 0), (cx,), (255, 0, 0), 1)
         cv2.line(imageForDrawing,(0, cy), (280, cy), (255, 0, 0), 1)
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
@@ -59,4 +59,5 @@ with picamera.PiCamera() as camera:
         motorControl(thresh, croppedImage, contours)
         cv2.imshow("lineVision", croppedImage)
         cv2.imshow("lineVision1", thresh)
+        gpg.set_speed(0)
         cv2.waitKey(1)
