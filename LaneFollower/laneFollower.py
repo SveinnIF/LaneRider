@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 import picamera
-#import math
+# import math
 from easygopigo3 import EasyGoPiGo3
+
 gpg = EasyGoPiGo3()
 
 
@@ -18,6 +19,7 @@ def findContours(image):
     im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
+
 def motorControl(image, imageForDrawing, contours):
     if len(contours) > 0:
         contour_area = max(contours, key=cv2.contourArea)
@@ -26,18 +28,17 @@ def motorControl(image, imageForDrawing, contours):
         width = len(image[0])
         height = len(image)
 
-        cx = int(moment['m10']/moment['m00'])
-        cy = int(moment['m01']/moment['m00'])
+        cx = int(moment['m10'] / moment['m00'])
+        cy = int(moment['m01'] / moment['m00'])
 
-        cv2.line(imageForDrawing,(cx, 0), (cx,width), (255, 0, 0), 1)
-        cv2.line(imageForDrawing,(0, cy), (height, cy), (255, 0, 0), 1)
+        cv2.line(imageForDrawing, (cx, 0), (cx, width), (255, 0, 0), 1)
+        cv2.line(imageForDrawing, (0, cy), (height, cy), (255, 0, 0), 1)
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-
-        power_proportion = abs( pow(cx - width / 2, 2)*100 / pow(width / 2, 2) )
+        power_proportion = abs(pow(cx - width / 2, 2) * 100 / pow(width, 2))
         print(power_proportion)
-        gpg.steer(100-power_proportion,100+power_proportion)
+        gpg.steer(100 + power_proportion, 100 - power_proportion)
 
     else:
         gpg.set_speed(0)
@@ -50,14 +51,15 @@ def motorControl(image, imageForDrawing, contours):
         # else:
         #     print("Can't see the line")
 
+
 imageHeight = 480
 imageWidth = 640
 
 with picamera.PiCamera() as camera:
-    camera.resolution = (imageWidth,imageHeight)
+    camera.resolution = (imageWidth, imageHeight)
     camera.framerate = 30
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
-    image = image.reshape((imageHeight,imageWidth,3))
+    image = image.reshape((imageHeight, imageWidth, 3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         gpg.set_speed(0)
         lane_image = np.copy(image)
