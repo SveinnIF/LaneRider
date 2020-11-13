@@ -15,7 +15,7 @@ def cropImage(image, top, bottom, left, right):
 def findContours(image):
     newImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurredImage = cv2.GaussianBlur(newImage, (5, 5), 0)
-    _, img_bw = cv2.threshold(blurredImage, 190, 255, cv2.THRESH_BINARY)
+    _, img_bw = cv2.threshold(blurredImage, 190, 255, cv2.THRESH_BINARY_INV)
     im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
@@ -32,7 +32,7 @@ def motorControl(image, imageForDrawing, contours):
             cy = int(moment['m01'] / moment['m00'])
         else:
             return
-        
+
         cv2.line(imageForDrawing, (cx, 0), (cx, width), (255, 0, 0), 1)
         cv2.line(imageForDrawing, (0, cy), (height, cy), (255, 0, 0), 1)
 
