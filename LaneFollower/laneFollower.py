@@ -59,6 +59,7 @@ with picamera.PiCamera() as camera:
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
+        gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
         thresh, contours = findContours(croppedImage)
