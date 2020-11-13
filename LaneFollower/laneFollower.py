@@ -33,7 +33,8 @@ def motorControl(image, imageForDrawing, contours):
 
         gpg.set_speed(150)
         gpg.steer(100 - 200 * math.cos((math.pi / 640) * cx), 100 - 200 * -math.cos((math.pi / 640) * cx))
-
+    else:
+        gpg.set_speed(0)
         # if cx >= 340:
         #     gpg.left()
         # if 340 > cx > 300:
