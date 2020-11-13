@@ -44,7 +44,7 @@ def motorControl(image, imageForDrawing, contours):
         # gpg.steer(100 - power_proportion, 100 - power_proportion)
         if cx < width/3:
             gpg.right()
-        if width/3 < cx < width*2/3:
+        #if width/3 < cx < width*2/3:
            # gpg.forward()
         if cx < width*2/3:
             gpg.left()
