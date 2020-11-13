@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import picamera
-import math
+#import math
 from easygopigo3 import EasyGoPiGo3
 gpg = EasyGoPiGo3()
 
@@ -34,8 +34,8 @@ def motorControl(image, imageForDrawing, contours):
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), 1)
 
-        gpg.set_speed(100)
-        power_proportion = abs((cx-width/2)*100/width/2)
+
+        power_proportion = abs( pow(cx - width / 2, 2)*100 / pow(width / 2, 2) )
         print(power_proportion)
         gpg.steer(100-power_proportion,100+power_proportion)
 
@@ -62,7 +62,9 @@ with picamera.PiCamera() as camera:
         gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
+        cv2.resize(croppedImage, (100, 240))
         thresh, contours = findContours(croppedImage)
+        gpg.set_speed(30)
         motorControl(thresh, croppedImage, contours)
         cv2.imshow("lineVision", croppedImage)
         cv2.imshow("lineVision1", thresh)
