@@ -101,7 +101,7 @@ def motorControl(image, imageForDrawing, contours):
         cosine = katet/hypotenus
         #turnRobot(cx, 100, 240)
         print(cosine)
-        control_robot(cosine)
+        control_robot(-cosine)
 
 
 
