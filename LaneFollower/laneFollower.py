@@ -51,23 +51,25 @@ def motorControl(image, imageForDrawing, contours):
 
         power_proportion = abs(cx)
         print(power_proportion)
-        # gpg.steer(100 - power_proportion, 100 - power_proportion)
-        if cx < width/3:
-            gpg.right()
-        #if width/3 < cx < width*2/3:
-           # gpg.forward()
-        if cx < width*2/3:
-            gpg.left()
-    else:
         gpg.set_speed(0)
-        # if cx >= 340:
-        #     gpg.left()
-        # if 340 > cx > 300:
-        #     gpg.forward()
-        # if cx < 300:
+        if cx >= 340:
+            gpg.left()
+        if 340 > cx > 300:
+            gpg.forward()
+        if cx < 300:
+            gpg.right()
+        else:
+            print("Can't see the line")
+
+        # gpg.steer(100 - power_proportion, 100 - power_proportion)
+        # if cx < width/3:
         #     gpg.right()
-        # else:
-        #     print("Can't see the line")
+        # #if width/3 < cx < width*2/3:
+        #    # gpg.forward()
+        # if cx < width*2/3:
+        #     gpg.left()
+
+
 
 
 imageHeight = 480
