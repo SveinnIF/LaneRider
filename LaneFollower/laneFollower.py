@@ -30,7 +30,7 @@ def findContours(image):
     return img_bw, contours
 
 def turnRobot(x_coord, center_threshold, img_width):
-    gpg.set_speed(20)
+    gpg.set_speed(0)
     center = img_width / 2
     left_threshold = center - center_threshold / 2
     right_threshold = center + center_threshold / 2
