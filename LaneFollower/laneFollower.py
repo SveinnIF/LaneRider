@@ -4,6 +4,7 @@ import picamera
 import math
 from easygopigo3 import EasyGoPiGo3
 import select
+import sys
 GPG = EasyGoPiGo3()
 
 
