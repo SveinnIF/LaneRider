@@ -100,6 +100,7 @@ def motorControl(image, imageForDrawing, contours):
         #angle = angleRad * 180 / math.pi
         cosine = katet/hypotenus
         #turnRobot(cx, 100, 240)
+        print(cosine)
         control_robot(cosine)
 
 
