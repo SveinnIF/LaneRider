@@ -42,6 +42,19 @@ def turnRobot(x_coord, center_threshold, img_width):
     else:
         gpg.right()
 
+def control_robot(x_coord, img_width, min_turn_rate, max_turn_rate, forward_power, speed_percentage):
+    center = img_width / 2
+
+    eccentricity = x_coord - center; # [-img_width/2, img_width/2]. A measure of how far a point is from the y-axis of the image. Negative if point is on the left. Positive if point is on the right.
+
+    turn_rate = min_turn_rate + eccentricity * (max_turn_rate - min_turn_rate) # [min_turn_rate, max_turn_rate]. Negative if point is on the left. Positive if point is on the right.
+
+    left_power = forward_power + turn_rate * speed_percentage
+    right_power = forward_power - turn_rate * speed_percentage
+
+    gpg.set_motor_power(gpg.MOTOR_LEFT, left_power)
+    gpg.set_motor_power(gpg.MOTOR_RIGHT, right_power)
+
 def otherTurnRobot(cx):
     gpg.set_speed(20)
     if cx >= 240 * 2 / 3:
@@ -52,6 +65,10 @@ def otherTurnRobot(cx):
         gpg.left()
     else:
         print("Can't see the line")
+
+def otherOtherTurnRobot(cx):
+    gpg.set_speed(10)
+    gpg.steer()
 
 def motorControl(image, imageForDrawing, contours):
     if len(contours) > 0:
@@ -77,7 +94,8 @@ def motorControl(image, imageForDrawing, contours):
         power_proportion = abs(cx)
         print(power_proportion)
 
-        turnRobot(cx, 100, 240)
+        #turnRobot(cx, 100, 240)
+        control_robot(cx,249,1,1,10,25)
 
 
 
