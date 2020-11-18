@@ -2,10 +2,20 @@ import cv2
 import numpy as np
 import picamera
 # import math
+import select
+import sys
 from easygopigo3 import EasyGoPiGo3
 
 gpg = EasyGoPiGo3()
 
+
+def stop_program():
+    i, o, e = select.select([sys.stdin], [], [], 0.0001)
+    for s in i:
+        if s == sys.stdin:
+            input = sys.stdin.readline(1)
+            return True
+    return False
 
 def cropImage(image, top, bottom, left, right):
     newImage = image[top:bottom, left:right]
@@ -69,6 +79,10 @@ with picamera.PiCamera() as camera:
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     image = image.reshape((imageHeight, imageWidth, 3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
+        if stop_program():
+            gpg.set_motor_power(gpg.MOTOR_LEFT + gpg.MOTOR_RIGHT, 0)
+            break
+        print("----------------\n")
         gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
