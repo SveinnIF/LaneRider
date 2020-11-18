@@ -30,6 +30,7 @@ def findContours(image):
     return img_bw, contours
 
 def turnRobot(x_coord, center_threshold, img_width):
+    gpg.set_speed(20)
     center = img_width / 2
     left_threshold = center - center_threshold / 2
     right_threshold = center + center_threshold / 2
@@ -42,7 +43,7 @@ def turnRobot(x_coord, center_threshold, img_width):
         gpg.right()
 
 def otherTurnRobot(cx):
-    gpg.set_speed(1)
+    gpg.set_speed(20)
     if cx >= 240 * 2 / 3:
         gpg.right()
     if 240 / 3 > cx > 240 * 2 / 3:
@@ -101,12 +102,11 @@ with picamera.PiCamera() as camera:
             gpg.set_motor_power(gpg.MOTOR_LEFT + gpg.MOTOR_RIGHT, 0)
             break
         print("----------------\n")
-        gpg.set_speed(0)
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
         resized_image = cv2.resize(croppedImage, (240, 100))
         thresh, contours = findContours(resized_image)
-        gpg.set_speed(10)
+        gpg.set_speed(20)
         motorControl(thresh, resized_image, contours)
         cv2.imshow("lineVision", resized_image)
         cv2.imshow("lineVision1", thresh)
