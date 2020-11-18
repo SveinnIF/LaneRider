@@ -29,6 +29,28 @@ def findContours(image):
     im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
+def turnRobot(x_coord, center_threshold, img_width):
+    center = img_width / 2
+    left_threshold = center - center_threshold / 2
+    right_threshold = center + center_threshold / 2
+
+    if x_coord <= left_threshold:
+        gpg.left()
+    elif x_coord <= right_threshold:
+        gpg.forward()
+    else:
+        gpg.right()
+
+def otherTurnRobot(cx):
+    gpg.set_speed(1)
+    if cx >= 240 * 2 / 3:
+        gpg.right()
+    if 240 / 3 > cx > 240 * 2 / 3:
+        gpg.forward()
+    if cx < 240 / 3:
+        gpg.left()
+    else:
+        print("Can't see the line")
 
 def motorControl(image, imageForDrawing, contours):
     if len(contours) > 0:
@@ -53,16 +75,9 @@ def motorControl(image, imageForDrawing, contours):
 
         power_proportion = abs(cx)
         print(power_proportion)
-        print(cx)
-        gpg.set_speed(1)
-        if cx >= 240*2/3:
-            gpg.right()
-        if 240/3 > cx > 240*2/3:
-            gpg.forward()
-        if cx < 240/3:
-            gpg.left()
-        else:
-            print("Can't see the line")
+
+        turnRobot(cx, 80, 240)
+
 
 
         # gpg.steer(100 - power_proportion, 100 - power_proportion)
