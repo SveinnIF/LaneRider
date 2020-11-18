@@ -31,12 +31,10 @@ def findContours(image):
 
 
 def motorControl(image, imageForDrawing, contours):
-    singleContour = []
     if len(contours) > 0:
-        if len(contours) > 1:
-            singleContour = contours[determineLargestContour(contours)]
 
-        contour_area = max(singleContour, key=cv2.contourArea)
+
+        contour_area = max(contours, key=cv2.contourArea)
         moment = cv2.moments(contour_area)
 
         width = len(image[0])
@@ -55,6 +53,7 @@ def motorControl(image, imageForDrawing, contours):
 
         power_proportion = abs(cx)
         print(power_proportion)
+        print(cx)
         gpg.set_speed(1)
         if cx >= 240*2/3:
             gpg.left()
@@ -65,6 +64,7 @@ def motorControl(image, imageForDrawing, contours):
         else:
             print("Can't see the line")
 
+
         # gpg.steer(100 - power_proportion, 100 - power_proportion)
         # if cx < width/3:
         #     gpg.right()
@@ -73,17 +73,6 @@ def motorControl(image, imageForDrawing, contours):
         # if cx < width*2/3:
         #     gpg.left()
 
-
-def determineLargestContour(contours):
-    area1 = 0
-    area2 = 0
-
-    for i in contours:
-        area1 = cv2.contourArea(contours[i])
-        if area1 > area2:
-            area2 = cv2.contourArea(contours[i])
-            index = i
-    return index
 imageHeight = 480
 imageWidth = 640
 
