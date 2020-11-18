@@ -6,8 +6,8 @@ from easygopigo3 import EasyGoPiGo3
 GPG = EasyGoPiGo3()
 
 
-imageHeight = 768
-imageWidth = 1024
+imageHeight = 480
+imageWidth = 640
 
 TARGET_H = 200
 TARGET_W = imageWidth
