@@ -32,8 +32,10 @@ def findContours(image):
 
 def motorControl(image, imageForDrawing, contours):
     if len(contours) > 0:
+        if len(contours) > 1:
+            singleContour = contours[determineLargestContour(contours)]
 
-        contour_area = max(contours, key=cv2.contourArea)
+        contour_area = max(singleContour, key=cv2.contourArea)
         moment = cv2.moments(contour_area)
 
         width = len(image[0])
@@ -71,8 +73,16 @@ def motorControl(image, imageForDrawing, contours):
         #     gpg.left()
 
 
+def determineLargestContour(contours):
+    area1 = 0
+    area2 = 0
 
-
+    for i in contours:
+        area1 = cv2.contourArea(contours[i])
+        if area1 > area2:
+            area2 = cv2.contourArea(contours[i])
+            index = i
+    return index
 imageHeight = 480
 imageWidth = 640
 
@@ -88,7 +98,7 @@ with picamera.PiCamera() as camera:
         print("----------------\n")
         gpg.set_speed(0)
         lane_image = np.copy(image)
-        croppedImage = cropImage(lane_image, 200, 480, 100, 540)
+        croppedImage = cropImage(lane_image, 200, 480, 40, 600)
         resized_image = cv2.resize(croppedImage, (240, 100))
         thresh, contours = findContours(resized_image)
         gpg.set_speed(10)
