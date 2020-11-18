@@ -44,7 +44,7 @@ def turnRobot(x_coord, center_threshold, img_width):
 
 def control_robot(turn_rate):
     speed_percentage = 25
-    FORWARD_POWER = 50
+    FORWARD_POWER = 5
 
     left_power = FORWARD_POWER + turn_rate * speed_percentage
     right_power = FORWARD_POWER - turn_rate * speed_percentage
