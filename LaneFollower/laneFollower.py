@@ -29,44 +29,15 @@ def findContours(image):
     im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
-def turnRobot(x_coord, center_threshold, img_width):
-    gpg.set_speed(0)
-    center = img_width / 2
-    left_threshold = center - center_threshold / 2
-    right_threshold = center + center_threshold / 2
-
-    if x_coord <= left_threshold:
-        gpg.left()
-    elif x_coord <= right_threshold:
-        gpg.forward()
-    else:
-        gpg.right()
-
 def control_robot(turn_rate):
     speed_percentage = 25
     FORWARD_POWER = 50
 
     left_power = FORWARD_POWER + turn_rate * speed_percentage
     right_power = FORWARD_POWER - turn_rate * speed_percentage
-    # print("Left Power: {}, Right Power: {}".format(left_power,right_power))
 
     gpg.set_motor_power(gpg.MOTOR_LEFT, left_power)
     gpg.set_motor_power(gpg.MOTOR_RIGHT, right_power)
-
-def otherTurnRobot(cx):
-    gpg.set_speed(20)
-    if cx >= 240 * 2 / 3:
-        gpg.right()
-    if 240 / 3 > cx > 240 * 2 / 3:
-        gpg.forward()
-    if cx < 240 / 3:
-        gpg.left()
-    else:
-        print("Can't see the line")
-
-def otherOtherTurnRobot(cx):
-    gpg.set_speed(10)
-    gpg.steer()
 
 def motorControl(image, imageForDrawing, contours):
     if len(contours) > 0:
@@ -74,9 +45,6 @@ def motorControl(image, imageForDrawing, contours):
 
         contour_area = max(contours, key=cv2.contourArea)
         moment = cv2.moments(contour_area)
-
-        width = len(image[0])
-        height = len(image)
 
         if(moment['m00'] != 0):
             cx = int(moment['m10'] / moment['m00'])
@@ -88,30 +56,12 @@ def motorControl(image, imageForDrawing, contours):
         cv2.line(imageForDrawing, (cx-10, cy), (cx+10, cy), (0, 0, 255), 1)
         cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (0, 0, 255), 1)
 
-
-        power_proportion = abs(cx)
-        print(power_proportion)
-
         x0, y0 = newimgsize[0] / 2, newimgsize[1]
         katet =  x0 - cx
         motKat = y0 - cy
         hypotenus = math.sqrt(math.pow(math.fabs(katet), 2) + math.pow(math.fabs(motKat), 2))
-        #angleRad = math.acos(katet / hypotenus)
-        #angle = angleRad * 180 / math.pi
         cosine = katet/hypotenus
-        #turnRobot(cx, 100, 240)
-        print(cosine)
         control_robot(-cosine)
-
-
-
-        # gpg.steer(100 - power_proportion, 100 - power_proportion)
-        # if cx < width/3:
-        #     gpg.right()
-        # #if width/3 < cx < width*2/3:
-        #    # gpg.forward()
-        # if cx < width*2/3:
-        #     gpg.left()
 
 imageHeight = 480
 imageWidth = 640
