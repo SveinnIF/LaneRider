@@ -5,6 +5,26 @@ import math
 from easygopigo3 import EasyGoPiGo3
 GPG = EasyGoPiGo3()
 
+
+imageHeight = 768
+imageWidth = 1024
+
+TARGET_H = 200
+TARGET_W = imageWidth
+
+# Birdseye transform lookup table
+src = np.float32([[0, TARGET_H], [TARGET_W, TARGET_H], [0, 0], [TARGET_W, 0]])
+dst = np.float32([[165, TARGET_H], [475, TARGET_H], [0, 0], [TARGET_W, 0]])
+M = cv2.getPerspectiveTransform(src, dst)
+Minv = cv2.getPerspectiveTransform(dst, src)
+
+def birdsEyeTransform(image):
+
+    img = image[280:(280+TARGET_H), 0:TARGET_W]
+    warped_img = cv2.warpPerspective(img, M, (TARGET_W, TARGET_H))
+
+    return warped_img
+
 def canny(image):
     #this turns the image grey
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -93,8 +113,7 @@ def regionOfInterest(image):
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
 
-imageHeight = 768
-imageWidth = 1024
+
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth,imageHeight)
     camera.framerate = 30
@@ -103,10 +122,11 @@ with picamera.PiCamera() as camera:
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
-        croppedImage = regionOfInterest(canny_image)
+        img_birdseye = birdsEyeTransform(canny_image)
+        #croppedImage = regionOfInterest(canny_image)
         #waypoints = waypoint_detection(croppedImage)
         #print(waypoints)
-        lines = cv2.HoughLinesP(croppedImage, 2, np.pi / 180, 100, np.array([]), minLineLength=20, maxLineGap=15)
+        lines = cv2.HoughLinesP(img_birdseye, 2, np.pi / 180, 100, np.array([]), minLineLength=20, maxLineGap=15)
         #print(lines)
         wheel_control(find_usable_line(lines))
         line_image = display_lines(lane_image, lines)
