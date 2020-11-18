@@ -95,7 +95,7 @@ def motorControl(image, imageForDrawing, contours):
         print(power_proportion)
 
         #turnRobot(cx, 100, 240)
-        control_robot(cx,249,0.1,1,100,25)
+        control_robot(cx,240,0.1,1,100,25)
 
 
 
