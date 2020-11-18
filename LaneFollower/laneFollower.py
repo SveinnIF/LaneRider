@@ -52,11 +52,11 @@ def motorControl(image, imageForDrawing, contours):
         power_proportion = abs(cx)
         print(power_proportion)
         gpg.set_speed(1)
-        if cx >= 340:
+        if cx >= 240*2/3:
             gpg.left()
-        if 340 > cx > 300:
+        if 240/3 > cx > 240*2/3:
             gpg.forward()
-        if cx < 300:
+        if cx < 240/3:
             gpg.right()
         else:
             print("Can't see the line")
