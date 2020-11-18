@@ -25,6 +25,14 @@ def birdsEyeTransform(image):
 
     return warped_img
 
+def stop_program():
+    i, o, e = select.select([sys.stdin], [], [], 0.0001)
+    for s in i:
+        if s == sys.stdin:
+            input = sys.stdin.readline(1)
+            return True
+    return False
+
 def canny(image):
     #this turns the image grey
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -120,6 +128,10 @@ with picamera.PiCamera() as camera:
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     image = image.reshape((imageHeight,imageWidth,3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
+        if stop_program():
+            GPG.set_motor_power(GPG.MOTOR_LEFT + GPG.MOTOR_RIGHT, 0)
+            break
+        print("----------------\n")
         lane_image = np.copy(image)
         canny_image = canny(lane_image)
         #img_birdseye = birdsEyeTransform(canny_image)
