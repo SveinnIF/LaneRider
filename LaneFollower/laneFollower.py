@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import picamera
-# import math
+import math
 import select
 import sys
 from easygopigo3 import EasyGoPiGo3
@@ -42,15 +42,13 @@ def turnRobot(x_coord, center_threshold, img_width):
     else:
         gpg.right()
 
-def control_robot(x_coord, img_width, min_turn_rate, max_turn_rate, forward_power, speed_percentage):
-    center = img_width / 2
+def control_robot(turn_rate):
+    speed_percentage = 25
+    FORWARD_POWER = 50
 
-    eccentricity = x_coord - center; # [-img_width/2, img_width/2]. A measure of how far a point is from the y-axis of the image. Negative if point is on the left. Positive if point is on the right.
-
-    turn_rate = min_turn_rate + eccentricity * (max_turn_rate - min_turn_rate) # [min_turn_rate, max_turn_rate]. Negative if point is on the left. Positive if point is on the right.
-
-    left_power = forward_power + turn_rate * speed_percentage
-    right_power = forward_power - turn_rate * speed_percentage
+    left_power = FORWARD_POWER + turn_rate * speed_percentage
+    right_power = FORWARD_POWER - turn_rate * speed_percentage
+    # print("Left Power: {}, Right Power: {}".format(left_power,right_power))
 
     gpg.set_motor_power(gpg.MOTOR_LEFT, left_power)
     gpg.set_motor_power(gpg.MOTOR_RIGHT, right_power)
@@ -94,8 +92,15 @@ def motorControl(image, imageForDrawing, contours):
         power_proportion = abs(cx)
         print(power_proportion)
 
+        x0, y0 = newimgsize[0] / 2, newimgsize[1]
+        katet =  x0 - cx
+        motKat = y0 - cy
+        hypotenus = math.sqrt(math.pow(math.fabs(katet), 2) + math.pow(math.fabs(motKat), 2))
+        #angleRad = math.acos(katet / hypotenus)
+        #angle = angleRad * 180 / math.pi
+        cosine = katet/hypotenus
         #turnRobot(cx, 100, 240)
-        control_robot(cx,240,0.1,1,100,25)
+        control_robot(cosine)
 
 
 
@@ -109,7 +114,7 @@ def motorControl(image, imageForDrawing, contours):
 
 imageHeight = 480
 imageWidth = 640
-
+newimgsize = (240, 100)
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth, imageHeight)
     camera.framerate = 30
@@ -120,9 +125,10 @@ with picamera.PiCamera() as camera:
             gpg.set_motor_power(gpg.MOTOR_LEFT + gpg.MOTOR_RIGHT, 0)
             break
         print("----------------\n")
+
         lane_image = np.copy(image)
         croppedImage = cropImage(lane_image, 200, 480, 40, 600)
-        resized_image = cv2.resize(croppedImage, (240, 100))
+        resized_image = cv2.resize(croppedImage, newimgsize)
         thresh, contours = findContours(resized_image)
         gpg.set_speed(20)
         motorControl(thresh, resized_image, contours)
