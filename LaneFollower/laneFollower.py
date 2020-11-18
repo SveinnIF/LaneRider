@@ -51,7 +51,7 @@ def motorControl(image, imageForDrawing, contours):
 
         power_proportion = abs(cx)
         print(power_proportion)
-        gpg.set_speed(0)
+        gpg.set_speed(1)
         if cx >= 340:
             gpg.left()
         if 340 > cx > 300:
