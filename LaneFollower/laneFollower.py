@@ -31,6 +31,7 @@ def findContours(image):
 
 
 def motorControl(image, imageForDrawing, contours):
+    singleContour = []
     if len(contours) > 0:
         if len(contours) > 1:
             singleContour = contours[determineLargestContour(contours)]
