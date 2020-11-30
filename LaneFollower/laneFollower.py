@@ -8,6 +8,13 @@ from easygopigo3 import EasyGoPiGo3
 
 gpg = EasyGoPiGo3()
 
+# values for configuration
+imageHeight = 480
+imageWidth = 640
+newimgsize = (240, 100)
+speed_percentage = 25
+FORWARD_POWER = 50
+
 
 def stop_program():
     i, o, e = select.select([sys.stdin], [], [], 0.0001)
@@ -17,8 +24,10 @@ def stop_program():
             return True
     return False
 
+
 def cropImage(image, top, bottom, left, right):
     newImage = image[top:bottom, left:right]
+    cv2.resize(newImage, newimgsize)
     return newImage
 
 
@@ -29,9 +38,15 @@ def findContours(image):
     im, contours, hierarchy = cv2.findContours(img_bw, 1, cv2.CHAIN_APPROX_NONE)
     return img_bw, contours
 
-def control_robot(turn_rate):
-    speed_percentage = 25
-    FORWARD_POWER = 50
+
+def motion_control_algorithm(cx, cy):
+
+    x0, y0 = newimgsize[0] / 2, newimgsize[1]
+    katet = x0 - cx
+    motKat = y0 - cy
+    hypotenus = math.sqrt(math.pow(math.fabs(katet), 2) + math.pow(math.fabs(motKat), 2))
+    cosine = katet / hypotenus
+    turn_rate = -cosine
 
     left_power = FORWARD_POWER + turn_rate * speed_percentage
     right_power = FORWARD_POWER - turn_rate * speed_percentage
@@ -39,7 +54,8 @@ def control_robot(turn_rate):
     gpg.set_motor_power(gpg.MOTOR_LEFT, left_power)
     gpg.set_motor_power(gpg.MOTOR_RIGHT, right_power)
 
-def motorControl(image, imageForDrawing, contours):
+
+def point_detection(imageForDrawing, contours):
     if len(contours) > 0:
 
 
@@ -56,34 +72,28 @@ def motorControl(image, imageForDrawing, contours):
         cv2.line(imageForDrawing, (cx-10, cy), (cx+10, cy), (0, 0, 255), 1)
         cv2.line(imageForDrawing, (cx, cy-10), (cx, cy+10), (0, 0, 255), 1)
 
-        x0, y0 = newimgsize[0] / 2, newimgsize[1]
-        katet =  x0 - cx
-        motKat = y0 - cy
-        hypotenus = math.sqrt(math.pow(math.fabs(katet), 2) + math.pow(math.fabs(motKat), 2))
-        cosine = katet/hypotenus
-        control_robot(-cosine)
+        return cx, cy
 
-imageHeight = 480
-imageWidth = 640
-newimgsize = (240, 100)
+
 with picamera.PiCamera() as camera:
     camera.resolution = (imageWidth, imageHeight)
     camera.framerate = 30
     image = np.empty((imageHeight * imageWidth * 3), dtype=np.uint8)
     image = image.reshape((imageHeight, imageWidth, 3))
     for frame in camera.capture_continuous(image, format="bgr", use_video_port=True):
+
+        #this code stops the program if the enter key is ever pressed
         if stop_program():
             gpg.set_motor_power(gpg.MOTOR_LEFT + gpg.MOTOR_RIGHT, 0)
             break
-        print("----------------\n")
 
         lane_image = np.copy(image)
-        croppedImage = cropImage(lane_image, 200, 480, 40, 600)
-        resized_image = cv2.resize(croppedImage, newimgsize)
+        resized_image = cropImage(lane_image, 200, 480, 40, 600)
         thresh, contours = findContours(resized_image)
-        gpg.set_speed(20)
-        motorControl(thresh, resized_image, contours)
-        cv2.imshow("lineVision", resized_image)
-        cv2.imshow("lineVision1", thresh)
+        #  the * unpacks the two values from point detection into two comma separated values
+        motion_control_algorithm(*point_detection(resized_image, contours))
+
+        cv2.imshow("camera feed", resized_image)
+        cv2.imshow("threshold feed", thresh)
 
         cv2.waitKey(1)
