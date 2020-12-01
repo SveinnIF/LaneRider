@@ -58,10 +58,11 @@ def motion_control_algorithm(cx, cy):
 def point_detection(imageForDrawing, contours):
     if len(contours) > 0:
 
-
-        contour_area = max(contours, key=cv2.contourArea)
-        moment = cv2.moments(contour_area)
-
+        # Finds largest contour and then finds its image moments
+        contour_largest = max(contours, key=cv2.contourArea)
+        moment = cv2.moments(contour_largest)
+        # The moments are used to calculate the average intensity cy and cx
+        # of the contour, where c stands for "centroid". if the area of the found contour is 0 then the function stops.
         if(moment['m00'] != 0):
             cx = int(moment['m10'] / moment['m00'])
             cy = int(moment['m01'] / moment['m00'])
